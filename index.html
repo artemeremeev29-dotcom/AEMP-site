@@ -1,166 +1,899 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AEMP — Artem Eremeev Media Player</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
+<title>AEMP PRO Classic — Артем Еремеев Медиа Плеер</title>
+
+<meta name="description"
+content="AEMP PRO Classic — музыкальный проигрыватель Артема Еремеева для Windows и Android.">
+
+<meta name="theme-color" content="#111111">
+
+<style>
+:root {
+    --orange: #FF8C00;
+    --orange-dark: #c96d00;
+    --black: #0b0b0b;
+    --dark: #111111;
+    --panel: #171717;
+    --panel2: #1d1d1d;
+    --line: #303030;
+    --text: #eeeeee;
+    --muted: #888888;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background:
+        radial-gradient(circle at 50% -100px,
+        rgba(255,140,0,.10),
+        transparent 420px),
+        #090909;
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* TOP BAR */
+
+.top {
+    height: 46px;
+    background: linear-gradient(#202020, #101010);
+    border-bottom: 1px solid #333;
+    box-shadow: 0 1px 0 #000;
+}
+
+.top-inner {
+    max-width: 1120px;
+    height: 100%;
+    margin: auto;
+    padding: 0 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.logo {
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        145deg,
+        #ff9b19,
+        #d66d00
+    );
+
+    color: #111;
+    font-size: 10px;
+    font-weight: 900;
+
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,.35),
+        0 0 0 1px #050505;
+}
+
+.brand span {
+    color: var(--orange);
+}
+
+.top-links {
+    display: flex;
+    gap: 18px;
+}
+
+.top-links a {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.top-links a:hover {
+    color: var(--orange);
+}
+
+/* MAIN */
+
+.wrap {
+    max-width: 1120px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+/* PLAYER HEADER */
+
+.player {
+    margin-top: 24px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #202020 0%,
+            #151515 45%,
+            #101010 100%
+        );
+
+    border: 1px solid #353535;
+    border-radius: 4px;
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,.55),
+        inset 0 1px 0 rgba(255,255,255,.04);
+
+    overflow: hidden;
+}
+
+.player-title {
+    height: 34px;
+
+    padding: 0 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background:
+        linear-gradient(#292929, #181818);
+
+    border-bottom: 1px solid #363636;
+
+    font-size: 12px;
+}
+
+.player-title strong {
+    color: var(--orange);
+}
+
+.release {
+    color: #777;
+}
+
+/* VISUALIZER */
+
+.visualizer {
+    height: 205px;
+
+    position: relative;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    gap: 5px;
+
+    padding: 28px 25px 20px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #090909,
+            #101010
+        );
+
+    overflow: hidden;
+}
+
+.visualizer::before {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 43px;
+
+    height: 1px;
+
+    background: #292929;
+}
+
+.bar {
+    width: 8px;
+    height: 30%;
+
+    background: linear-gradient(
+        to top,
+        #a85c00,
+        var(--orange)
+    );
+
+    box-shadow:
+        0 0 8px rgba(255,140,0,.22);
+
+    opacity: .75;
+}
+
+.bar:nth-child(2) { height: 55%; }
+.bar:nth-child(3) { height: 38%; }
+.bar:nth-child(4) { height: 75%; }
+.bar:nth-child(5) { height: 48%; }
+.bar:nth-child(6) { height: 85%; }
+.bar:nth-child(7) { height: 62%; }
+.bar:nth-child(8) { height: 42%; }
+.bar:nth-child(9) { height: 72%; }
+.bar:nth-child(10) { height: 52%; }
+.bar:nth-child(11) { height: 91%; }
+.bar:nth-child(12) { height: 65%; }
+.bar:nth-child(13) { height: 44%; }
+.bar:nth-child(14) { height: 78%; }
+.bar:nth-child(15) { height: 56%; }
+.bar:nth-child(16) { height: 35%; }
+
+/* PLAYER INFO */
+
+.track {
+    padding: 18px 20px 10px;
+
+    text-align: center;
+
+    background: #101010;
+}
+
+.track-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.track-info {
+    margin-top: 5px;
+
+    color: #777;
+    font-size: 11px;
+}
+
+.progress {
+    height: 5px;
+
+    margin: 15px 20px;
+
+    background: #303030;
+    border: 1px solid #080808;
+
+    border-radius: 3px;
+}
+
+.progress span {
+    display: block;
+
+    width: 38%;
+    height: 100%;
+
+    background: var(--orange);
+
+    box-shadow: 0 0 7px rgba(255,140,0,.4);
+}
+
+/* CONTROLS */
+
+.controls {
+    padding: 10px 15px 15px;
+
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+
+    background: #111;
+}
+
+.control {
+    width: 44px;
+    height: 34px;
+
+    border: 1px solid #3b3b3b;
+    border-radius: 3px;
+
+    background:
+        linear-gradient(#292929, #171717);
+
+    color: #bbb;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.control:hover {
+    color: var(--orange);
+    border-color: #8b5600;
+}
+
+.control.main {
+    color: var(--orange);
+    border-color: #925900;
+}
+
+/* SECTIONS */
+
+section {
+    margin-top: 25px;
+
+    background: var(--panel);
+
+    border: 1px solid #2c2c2c;
+    border-radius: 4px;
+
+    box-shadow:
+        0 7px 25px rgba(0,0,0,.3);
+}
+
+.section-head {
+    padding: 11px 14px;
+
+    background:
+        linear-gradient(#252525, #171717);
+
+    border-bottom: 1px solid #303030;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.section-head span {
+    color: var(--orange);
+}
+
+/* DOWNLOAD */
+
+.downloads {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+
+    background: #303030;
+}
+
+.download {
+    padding: 25px;
+
+    background:
+        linear-gradient(145deg, #191919, #121212);
+}
+
+.download:hover {
+    background:
+        linear-gradient(145deg, #202020, #151515);
+}
+
+.download h3 {
+    margin: 0 0 7px;
+
+    font-size: 18px;
+}
+
+.platform {
+    margin-bottom: 8px;
+
+    color: var(--orange);
+
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.download p {
+    margin: 0 0 18px;
+
+    color: #888;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.button {
+    display: inline-block;
+
+    padding: 9px 17px;
+
+    background:
+        linear-gradient(#ff9d1a, #e27600);
+
+    border: 1px solid #a85c00;
+    border-radius: 3px;
+
+    color: #111;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    text-decoration: none;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.3),
+        0 2px 4px rgba(0,0,0,.4);
+}
+
+.button:hover {
+    background:
+        linear-gradient(#ffb040, #f08300);
+}
+
+.file {
+    display: block;
+
+    margin-top: 9px;
+
+    color: #555;
+
+    font-size: 10px;
+}
+
+/* FEATURES */
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 1px;
+
+    background: #303030;
+}
+
+.feature {
+    min-height: 125px;
+
+    padding: 20px;
+
+    background: #171717;
+}
+
+.feature:hover {
+    background: #1b1b1b;
+}
+
+.feature-icon {
+    color: var(--orange);
+
+    font-size: 19px;
+
+    margin-bottom: 10px;
+}
+
+.feature h3 {
+    margin: 0 0 7px;
+
+    font-size: 14px;
+}
+
+.feature p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* ABOUT */
+
+.about {
+    padding: 24px;
+}
+
+.about p {
+    margin: 0 0 13px;
+
+    color: #999;
+
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.about strong {
+    color: var(--orange);
+}
+
+/* GITHUB */
+
+.github {
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.github-text h3 {
+    margin: 0 0 5px;
+
+    font-size: 15px;
+}
+
+.github-text p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 11px;
+}
+
+.github-button {
+    white-space: nowrap;
+}
+
+/* FOOTER */
+
+footer {
+    margin-top: 28px;
+    padding: 30px 15px 40px;
+
+    text-align: center;
+
+    color: #555;
+
+    font-size: 11px;
+}
+
+footer strong {
+    color: var(--orange);
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .top-links {
+        display: none;
     }
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b0b0f;
-      color: white;
+    .visualizer {
+        height: 150px;
+        gap: 3px;
     }
 
-    header {
-      padding: 25px;
-      text-align: center;
-      background: #111118;
-      border-bottom: 1px solid #292933;
+    .bar {
+        width: 5px;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 38px;
-    }
-
-    header p {
-      color: #aaa;
-      margin-bottom: 0;
-    }
-
-    main {
-      max-width: 900px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 50px 20px;
-    }
-
-    .hero h2 {
-      font-size: 42px;
-      margin: 10px 0;
-    }
-
-    .hero p {
-      color: #bbb;
-      font-size: 18px;
-    }
-
-    .button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 14px 25px;
-      border-radius: 10px;
-      background: #ffffff;
-      color: #000;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .section {
-      margin-top: 40px;
-      padding: 25px;
-      background: #14141c;
-      border: 1px solid #292933;
-      border-radius: 15px;
-    }
-
+    .downloads,
     .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
+        grid-template-columns: 1fr;
     }
 
-    .feature {
-      padding: 18px;
-      background: #1b1b25;
-      border-radius: 10px;
+    .github {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
-    footer {
-      text-align: center;
-      padding: 35px;
-      color: #777;
+    .github-button {
+        width: 100%;
+        text-align: center;
     }
-  </style>
+
+    .track-name {
+        font-size: 17px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<header>
-  <h1>🎵 AEMP</h1>
-  <p>Artem Eremeev Media Player</p>
-</header>
+<!-- TOP -->
 
-<main>
+<header class="top">
+    <div class="top-inner">
 
-  <section class="hero">
-    <h2>AEMP PRO Classic</h2>
-    <p>Enjoy the sound.</p>
+        <a href="#" class="brand">
+            <div class="logo">AE</div>
+            <div>AEMP <span>PRO</span></div>
+        </a>
 
-    <a class="button"
-       href="https://github.com/artemeremeev29-dotcom/AEMP/releases/latest">
-       Скачать AEMP
-    </a>
-  </section>
-
-  <section class="section">
-    <h2>О AEMP</h2>
-    <p>
-      AEMP — музыкальный проигрыватель от Артема Еремеева
-      для Android и Windows.
-    </p>
-  </section>
-
-  <section class="section">
-    <h2>Возможности</h2>
-
-    <div class="features">
-
-      <div class="feature">🎵 Музыкальный плеер</div>
-      <div class="feature">🎚️ Эквалайзер</div>
-      <div class="feature">🔊 Bass и эффекты</div>
-      <div class="feature">🎧 Stereo / Mono</div>
-      <div class="feature">💾 Сохранение настроек</div>
-      <div class="feature">📱 Android</div>
-      <div class="feature">🖥️ Windows</div>
-      <div class="feature">🔔 Фоновое воспроизведение</div>
+        <nav class="top-links">
+            <a href="#download">Скачать</a>
+            <a href="#features">Возможности</a>
+            <a href="#about">О проекте</a>
+            <a
+                href="https://github.com/artemeremeev29-dotcom/AEMP"
+                target="_blank">
+                GitHub
+            </a>
+        </nav>
 
     </div>
-  </section>
+</header>
 
-  <section class="section">
-    <h2>Последняя версия</h2>
 
-    <p>
-      <b>AEMP PRO Classic 1.2</b>
-    </p>
+<main class="wrap">
 
-    <p>
-      Статус: Release ✅
-    </p>
+    <!-- PLAYER -->
 
-    <a class="button"
-       href="https://github.com/artemeremeev29-dotcom/AEMP/releases">
-       Все версии
-    </a>
-  </section>
+    <div class="player">
+
+        <div class="player-title">
+            <strong>AEMP PRO Classic</strong>
+            <span class="release">1.2 · Release</span>
+        </div>
+
+        <div class="visualizer">
+
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+
+        </div>
+
+        <div class="track">
+
+            <div class="track-name">
+                AEMP PRO Classic
+            </div>
+
+            <div class="track-info">
+                Artem Eremeev Media Player · Enjoy the sound.
+            </div>
+
+        </div>
+
+        <div class="progress">
+            <span></span>
+        </div>
+
+        <div class="controls">
+
+            <button class="control">⏮</button>
+            <button class="control">◀</button>
+            <button class="control main">▶</button>
+            <button class="control">▶</button>
+            <button class="control">⏭</button>
+
+        </div>
+
+    </div>
+
+
+    <!-- DOWNLOAD -->
+
+    <section id="download">
+
+        <div class="section-head">
+            <span>AEMP</span> PRO Classic — Скачать
+        </div>
+
+        <div class="downloads">
+
+            <div class="download">
+
+                <div class="platform">
+                    ANDROID
+                </div>
+
+                <h3>📱 AEMP для Android</h3>
+
+                <p>
+                    AEMP PRO Classic 1.2
+                    для Android.
+                </p>
+
+                <a
+                    class="button"
+                    href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.2/AEMP-Classic-save.apk">
+                    Скачать APK
+                </a>
+
+                <span class="file">
+                    AEMP-Classic-save.apk
+                </span>
+
+            </div>
+
+
+            <div class="download">
+
+                <div class="platform">
+                    WINDOWS
+                </div>
+
+                <h3>💻 AEMP для Windows</h3>
+
+                <p>
+                    AEMP PRO Classic 1.2
+                    для Windows.
+                </p>
+
+                <a
+                    class="button"
+                    href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.2/AEMP-PRO.exe">
+                    Скачать EXE
+                </a>
+
+                <span class="file">
+                    AEMP-PRO.exe
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+
+    <section id="features">
+
+        <div class="section-head">
+            <span>Возможности</span> AEMP PRO Classic
+        </div>
+
+        <div class="features">
+
+            <div class="feature">
+                <div class="feature-icon">♫</div>
+                <h3>Музыкальный плеер</h3>
+                <p>
+                    Воспроизведение музыки
+                    и управление треками.
+                </p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">≋</div>
+                <h3>Эквалайзер</h3>
+                <p>
+                    Настройка звучания
+                    под свой вкус.
+                </p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">◉</div>
+                <h3>Бас и эффекты</h3>
+                <p>
+                    Усиление баса,
+                    стерео и другие
+                    аудиоэффекты.
+                </p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">↻</div>
+                <h3>Сохранение настроек</h3>
+                <p>
+                    Плейлист, громкость,
+                    эквалайзер и эффекты
+                    сохраняются.
+                </p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">▣</div>
+                <h3>Фоновое воспроизведение</h3>
+                <p>
+                    Музыка продолжает играть
+                    при сворачивании приложения.
+                </p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">◆</div>
+                <h3>Windows + Android</h3>
+                <p>
+                    Одна версия AEMP PRO Classic
+                    для двух платформ.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section id="about">
+
+        <div class="section-head">
+            <span>О проекте</span>
+        </div>
+
+        <div class="about">
+
+            <p>
+                <strong>AEMP</strong> —
+                Артем Еремеев Медиа Плеер.
+                Независимый музыкальный проигрыватель,
+                созданный Артемом Еремеевым.
+            </p>
+
+            <p>
+                <strong>AEMP PRO Classic</strong>
+                — основная классическая версия
+                плеера с поддержкой Windows и Android.
+            </p>
+
+            <p>
+                Главная идея AEMP проста:
+                удобный плеер, хорошее звучание
+                и максимум контроля над музыкой.
+            </p>
+
+            <p>
+                <strong>Enjoy the sound.</strong>
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- GITHUB -->
+
+    <section>
+
+        <div class="section-head">
+            <span>Разработка</span>
+        </div>
+
+        <div class="github">
+
+            <div class="github-text">
+
+                <h3>AEMP на GitHub</h3>
+
+                <p>
+                    Исходный код, релизы и развитие проекта.
+                </p>
+
+            </div>
+
+            <a
+                class="button github-button"
+                href="https://github.com/artemeremeev29-dotcom/AEMP"
+                target="_blank">
+                Открыть GitHub
+            </a>
+
+        </div>
+
+    </section>
 
 </main>
 
+
 <footer>
-  AEMP © Артем Еремеев
-  <br>
-  Enjoy the sound. 🎵
+    <strong>AEMP PRO Classic</strong> · 1.2 Release
+    <br><br>
+    © 2026 Artem Eremeev · AEMP — Artem Eremeev Media Player
 </footer>
 
 </body>
