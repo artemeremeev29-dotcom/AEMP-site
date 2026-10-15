@@ -2,828 +2,389 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111111">
-  <meta name="description" content="AEMP PRO — музыкальный плеер. Enjoy the sound.">
-  <title>AEMP PRO — Enjoy the sound</title>
-
-  <style>
-    :root {
-      --orange: #ff8c00;
-      --bg: #111111;
-      --panel: #191919;
-      --panel2: #202020;
-      --line: #303030;
-      --text: #f1f1f1;
-      --muted: #999999;
-      --green: #83d6a0;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    button, input, textarea { font: inherit; }
-    button { cursor: pointer; }
-
-    .topbar {
-      height: 66px;
-      padding: 0 6%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--line);
-      background: #141414;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: .4px;
-    }
-
-    .brand-mark {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      background: var(--orange);
-      color: #151515;
-      font-size: 19px;
-      font-weight: 900;
-    }
-
-    .brand small {
-      display: block;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      line-height: 1.2;
-    }
-
-    .top-links {
-      display: flex;
-      align-items: center;
-      gap: 25px;
-      color: #c6c6c6;
-      font-size: 13px;
-    }
-
-    .top-links a:hover { color: var(--orange); }
-
-    .admin-open {
-      border: 1px solid #454545;
-      border-radius: 7px;
-      padding: 7px 12px;
-      color: #ddd;
-      background: transparent;
-      font-size: 12px;
-    }
-
-    .admin-open:hover {
-      border-color: var(--orange);
-      color: var(--orange);
-    }
-
-    .layout {
-      max-width: 1120px;
-      margin: 35px auto 70px;
-      padding: 0 24px;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 275px;
-      gap: 25px;
-      align-items: start;
-    }
-
-    .main-column { min-width: 0; }
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-      min-height: 300px;
-      padding: 36px;
-      border: 1px solid #34302a;
-      border-radius: 12px;
-      background:
-        radial-gradient(ellipse at 95% 12%, #3a2916 0, transparent 45%),
-        #191919;
-    }
-
-    .eyebrow {
-      color: var(--orange);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .hero h1 {
-      max-width: 510px;
-      margin: 15px 0 8px;
-      font-size: clamp(34px, 5vw, 49px);
-      line-height: 1.08;
-      letter-spacing: -1.8px;
-    }
-
-    .hero h1 span { color: var(--orange); }
-
-    .hero p {
-      max-width: 410px;
-      margin: 15px 0 25px;
-      color: #b4b4b4;
-      font-size: 14px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .button {
-      min-height: 43px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      padding: 10px 17px;
-      border: 1px solid transparent;
-      border-radius: 7px;
-      font-weight: 750;
-      font-size: 13px;
-      transition: background .15s, border-color .15s;
-    }
-
-    .button-primary {
-      background: var(--orange);
-      color: #17120a;
-    }
-
-    .button-primary:hover { background: #ffa329; }
-
-    .button-secondary {
-      border-color: #444;
-      background: #222;
-      color: #eee;
-    }
-
-    .button-secondary:hover { border-color: #777; }
-
-    .wave {
-      position: absolute;
-      right: 26px;
-      bottom: 32px;
-      height: 100px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      opacity: .65;
-      pointer-events: none;
-    }
-
-    .wave i {
-      display: block;
-      width: 4px;
-      max-height: 90px;
-      border-radius: 5px;
-      background: var(--orange);
-    }
-
-    .wave i:nth-child(6n + 1) { height: 22px; }
-    .wave i:nth-child(6n + 2) { height: 45px; }
-    .wave i:nth-child(6n + 3) { height: 66px; }
-    .wave i:nth-child(6n + 4) { height: 35px; }
-    .wave i:nth-child(6n + 5) { height: 82px; }
-    .wave i:nth-child(6n) { height: 51px; }
-
-    .section {
-      margin-top: 34px;
-      scroll-margin-top: 20px;
-    }
-
-    .section-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .section-heading h2 {
-      margin: 0;
-      font-size: 21px;
-      letter-spacing: -.4px;
-    }
-
-    .section-heading small {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .news-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .news-card {
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      background: var(--panel);
-    }
-
-    .news-meta {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 9px;
-      margin-bottom: 9px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .news-tag {
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: #352613;
-      color: var(--orange);
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .4px;
-      text-transform: uppercase;
-    }
-
-    .news-card h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-      line-height: 1.4;
-    }
-
-    .news-body {
-      color: #bdbdbd;
-      font-size: 13px;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-
-    .news-admin-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 15px;
-    }
-
-    .small-button {
-      padding: 6px 10px;
-      border: 1px solid #414141;
-      border-radius: 5px;
-      background: #242424;
-      color: #ddd;
-      font-size: 12px;
-    }
-
-    .small-button:hover { border-color: var(--orange); }
-
-    .small-button.danger:hover {
-      border-color: #d95c5c;
-      color: #ff8888;
-    }
-
-    .empty-state {
-      padding: 26px 20px;
-      border: 1px dashed #3a3a3a;
-      border-radius: 9px;
-      color: var(--muted);
-      text-align: center;
-      font-size: 13px;
-    }
-
-    .sidebar {
-      display: grid;
-      gap: 16px;
-    }
-
-    .side-card {
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--panel);
-    }
-
-    .side-card h3 {
-      margin: 0 0 15px;
-      font-size: 15px;
-    }
-
-    .release-current {
-      padding-bottom: 17px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .release-label {
-      color: var(--green);
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .release-name {
-      margin: 6px 0 1px;
-      font-size: 17px;
-      font-weight: 750;
-    }
-
-    .release-info {
-      margin-bottom: 14px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .download-full { width: 100%; }
-
-    .old-title {
-      margin: 16px 0 8px;
-      color: var(--muted);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .old-release {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 0;
-      border-bottom: 1px solid #2b2b2b;
-      font-size: 12px;
-    }
-
-    .old-release:last-child { border-bottom: 0; }
-
-    .old-release span { color: var(--muted); }
-
-    .old-release a {
-      color: var(--orange);
-      font-weight: 700;
-    }
-
-    .side-copy {
-      margin: 0;
-      color: #aaa;
-      font-size: 13px;
-    }
-
-    .side-copy strong { color: #eee; }
-
-    .feature-row {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .feature {
-      padding: 15px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #171717;
-    }
-
-    .feature-mark {
-      color: var(--orange);
-      font-size: 18px;
-    }
-
-    .feature h3 {
-      margin: 8px 0 4px;
-      font-size: 13px;
-    }
-
-    .feature p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.5;
-    }
-
-    .admin-panel {
-      margin-top: 28px;
-      padding: 22px;
-      border: 1px solid #62431f;
-      border-radius: 10px;
-      background: #1b1814;
-      scroll-margin-top: 20px;
-    }
-
-    .admin-panel[hidden] { display: none; }
-
-    .admin-panel h2 {
-      margin: 0 0 5px;
-      font-size: 19px;
-    }
-
-    .admin-description {
-      margin: 0 0 18px;
-      color: #aaa;
-      font-size: 12px;
-    }
-
-    .field {
-      display: grid;
-      gap: 6px;
-      margin-bottom: 13px;
-    }
-
-    .field label {
-      color: #ddd;
-      font-size: 12px;
-      font-weight: 650;
-    }
-
-    .field input, .field textarea {
-      width: 100%;
-      padding: 11px 12px;
-      border: 1px solid #45413b;
-      border-radius: 6px;
-      outline: none;
-      background: #111;
-      color: #eee;
-      font-size: 13px;
-    }
-
-    .field input:focus, .field textarea:focus {
-      border-color: var(--orange);
-    }
-
-    .field textarea {
-      min-height: 115px;
-      resize: vertical;
-    }
-
-    .admin-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 9px;
-    }
-
-    .status {
-      min-height: 22px;
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 12px;
-      overflow-wrap: anywhere;
-    }
-
-    .status.error { color: #ff8888; }
-    .status.success { color: var(--green); }
-
-    .login-panel {
-      margin-top: 20px;
-      padding: 22px;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      background: var(--panel);
-    }
-
-    .login-panel[hidden] { display: none; }
-
-    .login-panel h3 { margin: 0 0 5px; }
-
-    .login-panel p {
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .footer {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 23px 24px 32px;
-      border-top: 1px solid var(--line);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      color: #777;
-      font-size: 11px;
-    }
-
-    .footer strong { color: #aaa; }
-
-    .toast {
-      position: fixed;
-      z-index: 10;
-      right: 20px;
-      bottom: 20px;
-      max-width: calc(100vw - 40px);
-      padding: 12px 16px;
-      border: 1px solid #444;
-      border-radius: 7px;
-      background: #222;
-      color: #eee;
-      box-shadow: 0 8px 35px #0008;
-      font-size: 13px;
-    }
-
-    .toast[hidden] { display: none; }
-
-    @media (max-width: 800px) {
-      .layout {
-        grid-template-columns: 1fr;
-        margin-top: 22px;
-      }
-
-      .sidebar {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        align-items: start;
-      }
-
-      .wave { opacity: .35; }
-    }
-
-    @media (max-width: 540px) {
-      .topbar { padding: 0 17px; }
-      .top-links { gap: 13px; }
-      .top-links a { display: none; }
-      .layout { padding: 0 14px; gap: 12px; }
-      .hero { min-height: 285px; padding: 25px 21px; }
-      .hero h1 { font-size: 37px; }
-      .hero p { max-width: 300px; }
-      .wave { right: 15px; bottom: 17px; opacity: .22; }
-      .sidebar { grid-template-columns: 1fr; }
-      .feature-row { grid-template-columns: 1fr; }
-      .feature { display: flex; align-items: start; gap: 12px; }
-      .feature-mark { min-width: 22px; }
-      .feature h3 { margin-top: 0; }
-      .footer { padding-left: 14px; padding-right: 14px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111111">
+<meta name="description" content="AEMP PRO — музыкальный плеер. Enjoy the sound.">
+<title>AEMP PRO — Enjoy the sound</title>
+<style>
+:root{--orange:#ff8c00;--bg:#111;--panel:#191919;--panel2:#202020;--line:#303030;--text:#f1f1f1;--muted:#999;--green:#83d6a0}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI",Arial,sans-serif;font-size:15px;line-height:1.6}
+a{color:inherit;text-decoration:none}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{min-height:66px;padding:0 6%;display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);background:#141414}
+.brand{display:flex;align-items:center;gap:12px;font-size:19px;font-weight:800;letter-spacing:.4px}
+.brand-mark{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--orange);color:#151515;font-size:19px;font-weight:900}
+.brand small{display:block;color:var(--muted);font-size:10px;font-weight:500;letter-spacing:2px;line-height:1.2}
+.top-links{display:flex;align-items:center;gap:25px;color:#c6c6c6;font-size:13px}
+.top-links a:hover{color:var(--orange)}
+.admin-open{border:1px solid #454545;border-radius:7px;padding:7px 12px;color:#ddd;background:transparent;font-size:12px}
+.admin-open:hover{border-color:var(--orange);color:var(--orange)}
+.layout{max-width:1120px;margin:35px auto 70px;padding:0 24px;display:grid;grid-template-columns:minmax(0,1fr) 275px;gap:25px;align-items:start}
+.main-column{min-width:0}
+.hero{position:relative;overflow:hidden;min-height:300px;padding:36px;border:1px solid #34302a;border-radius:12px;background:radial-gradient(ellipse at 95% 12%,#3a2916 0,transparent 45%),#191919}
+.eyebrow{color:var(--orange);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.hero h1{max-width:510px;margin:15px 0 8px;font-size:clamp(34px,5vw,49px);line-height:1.08;letter-spacing:-1.8px}
+.hero h1 span{color:var(--orange)}
+.hero p{max-width:410px;margin:15px 0 25px;color:#b4b4b4;font-size:14px}
+.hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.button{min-height:43px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:10px 17px;border:1px solid transparent;border-radius:7px;font-weight:750;font-size:13px;transition:background .15s,border-color .15s}
+.button-primary{background:var(--orange);color:#17120a}
+.button-primary:hover{background:#ffa329}
+.button-secondary{border-color:#444;background:#222;color:#eee}
+.button-secondary:hover{border-color:#777}
+.wave{position:absolute;right:26px;bottom:32px;height:100px;display:flex;align-items:center;gap:4px;opacity:.65;pointer-events:none}
+.wave i{display:block;width:4px;max-height:90px;border-radius:5px;background:var(--orange)}
+.wave i:nth-child(6n+1){height:22px}.wave i:nth-child(6n+2){height:45px}.wave i:nth-child(6n+3){height:66px}.wave i:nth-child(6n+4){height:35px}.wave i:nth-child(6n+5){height:82px}.wave i:nth-child(6n){height:51px}
+.section{margin-top:34px;scroll-margin-top:20px}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.section-heading h2{margin:0;font-size:21px;letter-spacing:-.4px}
+.section-heading small{color:var(--muted);font-size:12px}
+.news-list{display:grid;gap:12px}
+.news-card{padding:20px;border:1px solid var(--line);border-radius:9px;background:var(--panel)}
+.news-meta{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin-bottom:9px;color:var(--muted);font-size:11px}
+.news-tag{padding:2px 7px;border-radius:4px;background:#352613;color:var(--orange);font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
+.news-card h3{margin:0 0 8px;font-size:17px;line-height:1.4}
+.news-body{color:#bdbdbd;font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}
+.news-admin-actions{display:flex;gap:8px;margin-top:15px}
+.small-button{padding:6px 10px;border:1px solid #414141;border-radius:5px;background:#242424;color:#ddd;font-size:12px}
+.small-button:hover{border-color:var(--orange)}
+.small-button.danger:hover{border-color:#d95c5c;color:#ff8888}
+.empty-state{padding:26px 20px;border:1px dashed #3a3a3a;border-radius:9px;color:var(--muted);text-align:center;font-size:13px}
+.sidebar{display:grid;gap:16px}
+.side-card{padding:20px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.side-card h3{margin:0 0 15px;font-size:15px}
+.release-current{padding-bottom:17px;border-bottom:1px solid var(--line)}
+.release-label{color:var(--green);font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.release-name{margin:6px 0 1px;font-size:17px;font-weight:750}
+.release-info{margin-bottom:14px;color:var(--muted);font-size:12px}
+.download-full{width:100%}
+.old-title{margin:16px 0 8px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.old-release{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #2b2b2b;font-size:12px}
+.old-release:last-child{border-bottom:0}
+.old-release span{color:var(--muted)}
+.old-release a{color:var(--orange);font-weight:700}
+.side-copy{margin:0;color:#aaa;font-size:13px}
+.side-copy strong{color:#eee}
+.feature-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.feature{padding:15px;border:1px solid var(--line);border-radius:8px;background:#171717}
+.feature-mark{color:var(--orange);font-size:18px}
+.feature h3{margin:8px 0 4px;font-size:13px}
+.feature p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}
+.admin-panel{margin-top:28px;padding:22px;border:1px solid #62431f;border-radius:10px;background:#1b1814;scroll-margin-top:20px}
+.admin-panel[hidden],.login-panel[hidden]{display:none}
+.admin-panel h2{margin:0 0 5px;font-size:19px}
+.admin-description{margin:0 0 18px;color:#aaa;font-size:12px}
+.field{display:grid;gap:6px;margin-bottom:13px}
+.field label{color:#ddd;font-size:12px;font-weight:650}
+.field input,.field textarea{width:100%;padding:11px 12px;border:1px solid #45413b;border-radius:6px;outline:none;background:#111;color:#eee;font-size:13px}
+.field input:focus,.field textarea:focus{border-color:var(--orange)}
+.field textarea{min-height:115px;resize:vertical}
+.admin-actions{display:flex;flex-wrap:wrap;gap:9px}
+.status{min-height:22px;margin-top:12px;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+.status.error{color:#ff8888}.status.success{color:var(--green)}
+.login-panel{margin-top:20px;padding:22px;border:1px solid var(--line);border-radius:9px;background:var(--panel)}
+.login-panel h3{margin:0 0 5px}
+.login-panel p{margin:0 0 18px;color:var(--muted);font-size:12px}
+.footer{max-width:1120px;margin:0 auto;padding:23px 24px 32px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:15px;color:#777;font-size:11px}
+.footer strong{color:#aaa}
+.toast{position:fixed;z-index:10;right:20px;bottom:20px;max-width:calc(100vw - 40px);padding:12px 16px;border:1px solid #444;border-radius:7px;background:#222;color:#eee;box-shadow:0 8px 35px #0008;font-size:13px}
+.toast[hidden]{display:none}
+@media(max-width:800px){.layout{grid-template-columns:1fr;margin-top:22px}.sidebar{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.wave{opacity:.35}}
+@media(max-width:540px){.topbar{padding:0 17px}.top-links{gap:13px}.top-links a{display:none}.layout{padding:0 14px;gap:12px}.hero{min-height:285px;padding:25px 21px}.hero h1{font-size:37px}.hero p{max-width:300px}.wave{right:15px;bottom:17px;opacity:.22}.sidebar{grid-template-columns:1fr}.feature-row{grid-template-columns:1fr}.feature{display:flex;align-items:start;gap:12px}.feature-mark{min-width:22px}.feature h3{margin-top:0}.footer{padding-left:14px;padding-right:14px}}
+</style>
 </head>
-
 <body>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="AEMP PRO — главная">
-      <span class="brand-mark">A</span>
-      <span>AEMP PRO<small>ENJOY THE SOUND</small></span>
-    </a>
+<header class="topbar">
+  <a class="brand" href="#" aria-label="AEMP PRO — главная">
+    <span class="brand-mark">A</span><span>AEMP PRO<small>ENJOY THE SOUND</small></span>
+  </a>
+  <nav class="top-links" aria-label="Навигация">
+    <a href="#news">Новости</a><a href="#downloads">Загрузки</a>
+    <button class="admin-open" id="adminOpen" type="button">Администратор</button>
+  </nav>
+</header>
 
-    <nav class="top-links" aria-label="Навигация">
-      <a href="#news">Новости</a>
-      <a href="#downloads">Загрузки</a>
-      <button class="admin-open" id="adminOpen" type="button">
-        Администратор
-      </button>
-    </nav>
-  </header>
-
-  <main class="layout">
-    <div class="main-column">
-      <section class="hero">
-        <div class="eyebrow">Музыка. Без лишнего.</div>
-        <h1>Твой звук.<br><span>Твои правила.</span></h1>
-        <p>
-          AEMP PRO — компактный музыкальный плеер
-          с настройкой звучания, темами оформления
-          и автоматическим поиском музыки.
-        </p>
-
-        <div class="hero-actions">
-          <a class="button button-primary"
-             href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.3/AEMP-PRO_v1.3.apk">
-            ↓ Скачать AEMP PRO 1.3
-          </a>
-          <a class="button button-secondary"
-             href="#news">Что нового?</a>
-        </div>
-
-        <div class="wave" aria-hidden="true">
-          <i></i><i></i><i></i><i></i><i></i><i></i>
-          <i></i><i></i><i></i><i></i><i></i><i></i>
-          <i></i><i></i><i></i><i></i><i></i><i></i>
-          <i></i><i></i><i></i><i></i><i></i><i></i>
-          <i></i><i></i><i></i><i></i><i></i><i></i>
-        </div>
-      </section>
-
-      <section class="section" id="news">
-        <div class="section-heading">
-          <h2>Новости проекта</h2>
-          <small id="newsCount">Загрузка…</small>
-        </div>
-        <div class="news-list" id="newsList">
-          <div class="empty-state">Загружаем новости AEMP PRO…</div>
-        </div>
-      </section>
-
-      <section class="section" id="about">
-        <div class="section-heading">
-          <h2>Что внутри</h2>
-        </div>
-
-        <div class="feature-row">
-          <article class="feature">
-            <div class="feature-mark">♫</div>
-            <div>
-              <h3>Музыка под рукой</h3>
-              <p>Фонотека с автоматическим поиском музыкальных файлов.</p>
-            </div>
-          </article>
-
-          <article class="feature">
-            <div class="feature-mark">≋</div>
-            <div>
-              <h3>Настройки звука</h3>
-              <p>Эквалайзер, регулировка громкости и моно-режим.</p>
-            </div>
-          </article>
-
-          <article class="feature">
-            <div class="feature-mark">◐</div>
-            <div>
-              <h3>Своё оформление</h3>
-              <p>Темы и акцентные цвета на выбор.</p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="login-panel" id="loginPanel" hidden>
-        <h3>Вход в управление</h3>
-        <p>Авторизация доступна владельцу проекта.</p>
-
-        <form id="loginForm">
-          <div class="field">
-            <label for="loginEmail">Электронная почта</label>
-            <input id="loginEmail" type="email"
-                   autocomplete="username" required>
-          </div>
-          <div class="field">
-            <label for="loginPassword">Пароль</label>
-            <input id="loginPassword" type="password"
-                   autocomplete="current-password" required>
-          </div>
-          <button class="button button-primary" type="submit">
-            Войти
-          </button>
-        </form>
-
-        <div class="status" id="loginStatus" role="status"></div>
-      </section>
-
-      <section class="admin-panel" id="adminPanel" hidden>
-        <h2>Управление новостями</h2>
-        <p class="admin-description">
-          Публикации здесь появятся на сайте у всех посетителей.
-        </p>
-
-        <form id="newsForm">
-          <div class="field">
-            <label for="newsTitle">Заголовок</label>
-            <input id="newsTitle" maxlength="120" required
-                   placeholder="Например: AEMP PRO 1.4">
-          </div>
-
-          <div class="field">
-            <label for="newsBody">Текст новости</label>
-            <textarea id="newsBody" maxlength="10000" required
-                      placeholder="Расскажи, что изменилось…"></textarea>
-          </div>
-
-          <div class="admin-actions">
-            <button class="button button-primary" id="publishButton"
-                    type="submit">Опубликовать</button>
-            <button class="button button-secondary" id="cancelEdit"
-                    type="button" hidden>Отмена</button>
-            <button class="small-button" id="logoutButton"
-                    type="button">Выйти из аккаунта</button>
-          </div>
-        </form>
-
-        <div class="status" id="adminStatus" role="status"></div>
-      </section>
+<main class="layout">
+<div class="main-column">
+  <section class="hero">
+    <div class="eyebrow">Музыка. Без лишнего.</div>
+    <h1>Твой звук.<br><span>Твои правила.</span></h1>
+    <p>AEMP PRO — компактный музыкальный плеер с настройкой звучания, темами оформления и автоматическим поиском музыки.</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.3/AEMP-PRO_v1.3.apk">↓ Скачать AEMP PRO 1.3</a>
+      <a class="button button-secondary" href="#news">Что нового?</a>
     </div>
+    <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  </section>
 
-    <aside class="sidebar">
-      <section class="side-card" id="downloads">
-        <h3>Загрузки</h3>
+  <section class="section" id="news">
+    <div class="section-heading"><h2>Новости проекта</h2><small id="newsCount">Загрузка…</small></div>
+    <div class="news-list" id="newsList"><div class="empty-state">Загружаем новости AEMP PRO…</div></div>
+  </section>
 
-        <div class="release-current">
-          <div class="release-label">● Последняя версия</div>
-          <div class="release-name">AEMP PRO 1.3</div>
-          <div class="release-info">Android · APK</div>
-          <a class="button button-primary download-full"
-             href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.3/AEMP-PRO_v1.3.apk">
-            Скачать APK ↓
-          </a>
-        </div>
+  <section class="section" id="about">
+    <div class="section-heading"><h2>Что внутри</h2></div>
+    <div class="feature-row">
+      <article class="feature"><div class="feature-mark">♫</div><div><h3>Музыка под рукой</h3><p>Фонотека с автоматическим поиском музыкальных файлов.</p></div></article>
+      <article class="feature"><div class="feature-mark">≋</div><div><h3>Настройки звука</h3><p>Эквалайзер, регулировка громкости и моно-режим.</p></div></article>
+      <article class="feature"><div class="feature-mark">◐</div><div><h3>Своё оформление</h3><p>Темы и акцентные цвета на выбор.</p></div></article>
+    </div>
+  </section>
 
-        <div class="old-title">Предыдущие версии</div>
-        <div class="old-release">
-          <div><strong>Версия 1.2</strong><br><span>Android · APK</span></div>
-          <a href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.3/AEMP-PRO_v1.2.apk">
-            Скачать ↓
-          </a>
-        </div>
+  <section class="login-panel" id="loginPanel" hidden>
+    <h3>Вход в управление</h3><p>Авторизация доступна владельцу проекта.</p>
+    <form id="loginForm">
+      <div class="field"><label for="loginEmail">Электронная почта</label><input id="loginEmail" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="loginPassword">Пароль</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
+      <button class="button button-primary" type="submit">Войти</button>
+    </form>
+    <div class="status" id="loginStatus" role="status"></div>
+  </section>
 
-        <p class="side-copy" style="margin-top:14px">
-          Файлы доступны через официальный GitHub проекта.
-        </p>
-      </section>
+  <section class="admin-panel" id="adminPanel" hidden>
+    <h2>Управление новостями</h2><p class="admin-description">Публикации здесь появятся на сайте у всех посетителей.</p>
+    <form id="newsForm">
+      <div class="field"><label for="newsTitle">Заголовок</label><input id="newsTitle" maxlength="120" required placeholder="Например: AEMP PRO 1.4"></div>
+      <div class="field"><label for="newsBody">Текст новости</label><textarea id="newsBody" maxlength="10000" required placeholder="Расскажи, что изменилось…"></textarea></div>
+      <div class="admin-actions">
+        <button class="button button-primary" id="publishButton" type="submit">Опубликовать</button>
+        <button class="button button-secondary" id="cancelEdit" type="button" hidden>Отмена</button>
+        <button class="small-button" id="logoutButton" type="button">Выйти из аккаунта</button>
+      </div>
+    </form>
+    <div class="status" id="adminStatus" role="status"></div>
+  </section>
+</div>
 
-      <section class="side-card">
-        <h3>О проекте</h3>
-        <p class="side-copy">
-          <strong>AEMP</strong> — Артём Еремеев Медиа Плеер.
-          Проект развивается и получает новые возможности.
-        </p>
-      </section>
+<aside class="sidebar">
+  <section class="side-card" id="downloads">
+    <h3>Загрузки</h3>
+    <div class="release-current"><div class="release-label">● Последняя версия</div><div class="release-name">AEMP PRO 1.3</div><div class="release-info">Android · APK</div>
+      <a class="button button-primary download-full" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.3/AEMP-PRO_v1.3.apk">Скачать APK ↓</a>
+    </div>
+    <div class="old-title">Предыдущие версии</div>
+    <div class="old-release"><div><strong>Версия 1.2</strong><br><span>Android · APK</span></div><a href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.3/AEMP-PRO_v1.2.apk">Скачать ↓</a></div>
+    <p class="side-copy" style="margin-top:14px">Файлы доступны через официальный GitHub проекта.</p>
+  </section>
+  <section class="side-card"><h3>О проекте</h3><p class="side-copy"><strong>AEMP</strong> — Артём Еремеев Медиа Плеер. Проект развивается и получает новые возможности.</p></section>
+  <section class="side-card"><h3>Оставайся на связи</h3><p class="side-copy">Следи за обновлениями и новыми версиями AEMP PRO в официальных каналах проекта.</p><p style="margin:12px 0 0;font-size:12px"><a style="color:var(--orange)" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO" target="_blank" rel="noopener noreferrer">GitHub проекта ↗</a></p></section>
+</aside>
+</main>
 
-      <section class="side-card">
-        <h3>Оставайся на связи</h3>
-        <p class="side-copy">
-          Следи за обновлениями и новыми версиями AEMP PRO
-          в официальных каналах проекта.
-        </p>
-        <p style="margin:12px 0 0;font-size:12px">
-          <a style="color:var(--orange)"
-             href="https://github.com/artemeremeev29-dotcom/AEMP-PRO"
-             target="_blank" rel="noopener noreferrer">
-            GitHub проекта ↗
-          </a>
-        </p>
-      </section>
-    </aside>
-  </main>
+<footer class="footer"><span><strong>AEMP PRO</strong> · Enjoy the sound</span><span>Музыка — это настроение.</span></footer>
+<div class="toast" id="toast" role="status" hidden></div>
 
-  <footer class="footer">
-    <span><strong>AEMP PRO</strong> · Enjoy the sound</span>
-    <span>Музыка — это настроение.</span>
-  </footer>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-  <div class="toast" id="toast" role="status" hidden></div>
+const firebaseConfig = {
+  apiKey: "AIzaSyBjFAD2XqAj66VOSaWphzZXkSgCf6RBkpU",
+  authDomain: "armp-pro-71892.firebaseapp.com",
+  projectId: "armp-pro-71892",
+  storageBucket: "armp-pro-71892.firebasestorage.app",
+  messagingSenderId: "732643397543",
+  appId: "1:732643397543:web:84c9c5f2358c4431fff082",
+  measurementId: "G-ZQ25RN82EB"
+};
+const ADMIN_UID = "DyY7eHlKpCQDrj3Tp33Fyuj2LAt2";
 
-  <script type="module">
-    import { initializeApp } from
-      "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+const $ = id => document.getElementById(id);
+const newsList = $("newsList");
+const newsCount = $("newsCount");
+const loginPanel = $("loginPanel");
+const adminPanel = $("adminPanel");
+const loginStatus = $("loginStatus");
+const adminStatus = $("adminStatus");
+const loginForm = $("loginForm");
+const newsForm = $("newsForm");
+const adminOpen = $("adminOpen");
+const cancelEdit = $("cancelEdit");
+const publishButton = $("publishButton");
+const toast = $("toast");
 
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+let app, auth, db;
+let currentUser = null;
+let editingId = null;
+let newsCache = [];
+let toastTimer = null;
 
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      addDoc,
-      updateDoc,
-      deleteDoc,
-      doc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+function setStatus(element, message, type = "") {
+  element.textContent = message;
+  element.className = "status" + (type ? " " + type : "");
+}
+function notify(message) {
+  toast.textContent = message;
+  toast.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toast.hidden = true; }, 3500);
+}
+function showLogin() {
+  loginPanel.hidden = false;
+  loginPanel.scrollIntoView({behavior:"smooth", block:"center"});
+  $("loginEmail").focus({preventScroll:true});
+}
+function hideLogin() {
+  loginPanel.hidden = true;
+  loginForm.reset();
+  setStatus(loginStatus, "");
+}
+function showAdmin() {
+  adminPanel.hidden = false;
+  adminPanel.scrollIntoView({behavior:"smooth", block:"start"});
+}
+function hideAdmin() {
+  adminPanel.hidden = true;
+  resetNewsForm();
+}
+function resetNewsForm() {
+  editingId = null;
+  newsForm.reset();
+  publishButton.textContent = "Опубликовать";
+  cancelEdit.hidden = true;
+}
+function isAdmin(user) {
+  return !!user && user.uid === ADMIN_UID;
+}
+function formatDate(timestamp) {
+  if (!timestamp || typeof timestamp.toDate !== "function") return "Только что";
+  return timestamp.toDate().toLocaleString("ru-RU", {
+    day:"2-digit", month:"long", year:"numeric",
+    hour:"2-digit", minute:"2-digit"
+  });
+}
+function escapeText(value) {
+  return String(value ?? "");
+}
+function renderNews(items) {
+  newsList.replaceChildren();
+  newsCount.textContent = items.length
+    ? `Публикаций: ${items.length}`
+    : "Пока нет публикаций";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBjFAD2XqAj66VOSaWphzZXkSgCf6RBkpU",
-      authDomain: "armp-pro-71892.firebaseapp.com",
-      projectId: "armp-pro-71892",
-      storageBucket: "armp-pro-71892.firebasestorage.app",
-      messagingSenderId: "732643397543",
-      appId: "1:732643397543:web:84c9c5f2358c4431fff082",
-      measurementId: "G-ZQ25RN82EB"
-    };
+  if (!items.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty-state";
+    empty.textContent = "Новостей пока нет. Загляни позже!";
+    newsList.append(empty);
+    return;
+  }
 
-    // UID владельца. Firestore Rules тоже должны его проверять.
-    const ADMIN_UID = "DyY7eHlKpCQDrj3Tp33Fyuj2LAt2";
+  for (const item of items) {
+    const card = document.createElement("article");
+    card.className = "news-card";
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    const meta = document.createElement("div");
+    meta.className = "news-meta";
+    const tag = document.createElement("span");
+    tag.className = "news-tag";
+    tag.textContent = "AEMP PRO";
+    const date = document.createElement("span");
+    date.textContent = formatDate(item.createdAt);
+    meta.append(tag, date);
 
-    const $ = (id) => document.getElementById(id);
+    const title = document.createElement("h3");
+    title.textContent = escapeText(item.title);
+    const body = document.createElement("div");
+    body.className = "news-body";
+    body.textContent = escapeText(item.body);
+    card.append(meta, title, body);
 
-    const newsList = $("newsList");
-    const newsCount = $("newsCount");
-    const loginPanel = $("loginPanel");
-    const adminPanel = $("adminPanel");
-    const loginStatus = $("loginStatus");
-    const adminStatus = $("adminStatus");
-    const loginForm
+    if (isAdmin(currentUser)) {
+      const actions = document.createElement("div");
+      actions.className = "news-admin-actions";
+
+      const edit = document.createElement("button");
+      edit.type = "button";
+      edit.className = "small-button";
+      edit.textContent = "Редактировать";
+      edit.addEventListener("click", () => beginEdit(item));
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "small-button danger";
+      remove.textContent = "Удалить";
+      remove.addEventListener("click", () => removeNews(item.id));
+
+      actions.append(edit, remove);
+      card.append(actions);
+    }
+    newsList.append(card);
+  }
+}
+
+async function loadNews() {
+  try {
+    const snapshot = await getDocs(collection(db, "news"));
+    newsCache = snapshot.docs.map(entry => ({
+      id: entry.id,
+      ...entry.data()
+    }));
+    newsCache.sort((a, b) => {
+      const aTime = a.createdAt?.toMillis?.() ?? 0;
+      const bTime = b.createdAt?.toMillis?.() ?? 0;
+      return bTime - aTime;
+    });
+    renderNews(newsCache);
+  } catch (error) {
+    console.error("AEMP: не удалось загрузить новости", error);
+    newsCount.textContent = "Ошибка загрузки";
+    newsList.replaceChildren();
+    const empty = document.createElement("div");
+    empty.className = "empty-state";
+    empty.textContent = "Не удалось загрузить новости. Проверь подключение Firebase и правила Firestore.";
+    newsList.append(empty);
+  }
+}
+
+function beginEdit(item) {
+  if (!isAdmin(currentUser)) return;
+  editingId = item.id;
+  $("newsTitle").value = item.title ?? "";
+  $("newsBody").value = item.body ?? "";
+  publishButton.textContent = "Сохранить изменения";
+  cancelEdit.hidden = false;
+  adminPanel.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+async function removeNews(id) {
+  if (!isAdmin(currentUser)) {
+    notify("Нет прав администратора.");
+    return;
+  }
+  if (!confirm("Удалить эту новость? Это действие нельзя отменить.")) return;
+  try {
+    await deleteDoc(doc(db, "news", id));
+    setStatus(adminStatus, "Новость удалена.", "success");
+    notify("Новость удалена.");
+    await loadNews();
+  } catch (error) {
+    console.error(error);
+    setStatus(adminStatus, "Не удалось удалить новость: " + error.message, "error");
+  }
+}
+
+adminOpen.addEventListener("click", () => {
+  if (isAdmin(currentUser)) {
+    if (adminPanel.hidden) showAdmin();
+    else adminPanel.scrollIntoView({behavior:"smooth", block:"start"});
+  } else {
+    showLogin();
+  }
+});
+
+loginForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  setStatus(loginStatus, "Выполняется вход…");
+  const email = $("loginEmail").value.trim();
+  const password = $("loginPassword").value;
+
+  try {
+    const credential = await signInWithEmailAndPassword(auth, email, password);
+    if (!isAdmin(credential.user)) {
+      awa
