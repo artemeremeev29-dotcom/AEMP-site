@@ -1,52 +1,253 @@
-
 <!doctype html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AEMP PRO — Enjoy the sound</title>
+<title>AEMP PRO 1.4 — Enjoy the sound</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#171717;color:#eee;font:15px Arial,sans-serif}a{color:#ff8c00;text-decoration:none}a:hover{color:#fff}header{background:#222;border-bottom:2px solid #ff8c00;padding:16px max(calc((100% - 1000px)/2),18px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.brand{font-size:24px;font-weight:bold;color:#ff8c00}nav{display:flex;gap:16px;flex-wrap:wrap}main{max-width:1000px;margin:auto;padding:24px 16px}.hero{background:#222;border-radius:8px;padding:28px;margin-bottom:20px}.hero h1{font-size:32px;margin:0 0 10px}.muted{color:#aaa}.btn{display:inline-block;background:#ff8c00;color:#171717;padding:11px 15px;border-radius:5px;font-weight:bold;margin:8px 8px 0 0;border:0;cursor:pointer}.btn:hover{background:#ffa52e;color:#111}.btn.alt{background:#333;color:#ff8c00;border:1px solid #ff8c00}h2{font-size:21px;border-bottom:1px solid #444;padding-bottom:10px}.card{background:#222;padding:16px;border-radius:7px;margin:10px 0}.card h3{margin:0 0 8px;color:#ff8c00}section{margin-bottom:28px}input,textarea{display:block;width:100%;padding:11px;margin:9px 0;background:#171717;color:#fff;border:1px solid #555;border-radius:4px;font:inherit}textarea{min-height:75px}#login,#admin{display:none}footer{text-align:center;padding:24px;color:#888;border-top:1px solid #333}
+*{box-sizing:border-box}
+body{margin:0;background:#171717;color:#eee;font:15px Arial,sans-serif}
+a{color:#ff8c00;text-decoration:none}
+a:hover{color:#fff}
+header{background:#222;border-bottom:2px solid #ff8c00;padding:16px max(calc((100% - 1000px)/2),18px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-size:24px;font-weight:bold;color:#ff8c00}
+nav{display:flex;gap:16px;flex-wrap:wrap}
+main{max-width:1000px;margin:auto;padding:24px 16px}
+.hero{background:#222;border-radius:8px;padding:28px;margin-bottom:20px}
+.hero h1{font-size:32px;margin:0 0 10px}
+.muted{color:#aaa}
+.btn{display:inline-block;background:#ff8c00;color:#171717;padding:11px 15px;border-radius:5px;font-weight:bold;margin:8px 8px 0 0;border:0;cursor:pointer}
+.btn:hover{background:#ffa52e;color:#111}
+.btn.alt{background:#333;color:#ff8c00;border:1px solid #ff8c00}
+h2{font-size:21px;border-bottom:1px solid #444;padding-bottom:10px}
+.card{background:#222;padding:16px;border-radius:7px;margin:10px 0}
+.card h3{margin:0 0 8px;color:#ff8c00}
+section{margin-bottom:28px}
+input,textarea{display:block;width:100%;padding:11px;margin:9px 0;background:#171717;color:#fff;border:1px solid #555;border-radius:4px;font:inherit}
+textarea{min-height:75px}
+#login,#admin{display:none}
+footer{text-align:center;padding:24px;color:#888;border-top:1px solid #333}
 </style>
 </head>
 <body>
+
 <header>
 <a class="brand" href="#">AEMP PRO</a>
-<nav><a href="#news">Новости</a><a href="#downloads">Загрузки</a><a href="#extras">Дополнения</a><a href="#about">О проекте</a></nav>
+<nav>
+<a href="#news">Новости</a>
+<a href="#downloads">Загрузки</a>
+<a href="#extras">Скины</a>
+<a href="#about">О проекте</a>
+</nav>
 </header>
+
 <main>
+
 <div class="hero">
 <h1>Enjoy the sound</h1>
 <p class="muted">Твой музыкальный плеер. Твоя музыка. Твой AEMP.</p>
-<a class="btn" href="https://github.com/artemeremeev29-dotcom/AEMP-site/releases/download/1.2/AEMP-PRO.exe">Windows</a>
-<a class="btn alt" href="https://github.com/artemeremeev29-dotcom/AEMP-site/releases/download/1.2/AEMP-Classic-save.apk">Android APK</a>
+<p><b>AEMP PRO 1.4</b></p>
+<a class="btn" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.4/AEMP-PRO-1.4-skins_mod.apk">Скачать для Android</a>
 </div>
-<section id="news"><h2>Последние новости</h2><div id="list" class="muted">Загрузка новостей…</div></section>
-<section id="downloads"><h2>Загрузки</h2>
-<div class="card"><h3>AEMP PRO для Windows</h3><p class="muted">Музыка на твоём компьютере.</p><a class="btn" href="https://github.com/artemeremeev29-dotcom/AEMP-site/releases/download/1.2/AEMP-PRO.exe">Скачать EXE</a></div>
-<div class="card"><h3>AEMP Classic для Android</h3><p class="muted">Плеер для телефона.</p><a class="btn" href="https://github.com/artemeremeev29-dotcom/AEMP-site/releases/download/1.2/AEMP-Classic-save.apk">Скачать APK</a></div>
+
+<section id="news">
+<h2>Последние новости</h2>
+<div id="list" class="muted">Загрузка новостей…</div>
 </section>
-<section id="extras"><h2>Дополнения</h2><div class="card">Скины, эффекты и новые возможности — в будущих обновлениях.</div></section>
-<section id="about"><h2>О проекте</h2><div class="card">AEMP — Артем Еремеев Медиа Плеер.<br><a href="https://github.com/artemeremeev29-dotcom/AEMP">GitHub проекта</a></div></section>
-<section><h2>Администратор</h2><button class="btn alt" id="open">Вход администратора</button>
-<form id="login"><input id="email" type="email" placeholder="Email" required><input id="pass" type="password" placeholder="Пароль" required><button class="btn">Войти</button><p id="status" class="muted"></p></form>
-<div id="admin" class="card"><h3>Публикация новости</h3><form id="post"><input id="title" placeholder="Заголовок" required><textarea id="body" placeholder="Текст новости" required></textarea><button class="btn">Опубликовать</button></form><button class="btn alt" id="logout">Выйти</button><p id="msg" class="muted"></p></div>
+
+<section id="downloads">
+<h2>Загрузки</h2>
+<div class="card">
+<h3>AEMP PRO 1.4 для Android</h3>
+<p class="muted">Последняя версия музыкального плеера со встроенными скинами интерфейса.</p>
+<a class="btn" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.4/AEMP-PRO-1.4-skins_mod.apk">Скачать APK</a>
+</div>
 </section>
+
+<section id="extras">
+<h2>Встроенные скины</h2>
+
+<div class="card">
+<h3>AEMP Classic</h3>
+<p class="muted">Классический стиль интерфейса AEMP.</p>
+</div>
+
+<div class="card">
+<h3>AEMP Charm</h3>
+<p class="muted">Альтернативный стиль оформления.</p>
+</div>
+
+<div class="card">
+<h3>AEMP Bliss</h3>
+<p class="muted">Ещё один вариант внешнего вида плеера.</p>
+</div>
+
+<div class="card">
+<h3>AEMP Aero</h3>
+<p class="muted">Оформление в стиле Windows Aero.</p>
+</div>
+</section>
+
+<section id="about">
+<h2>О проекте</h2>
+<div class="card">
+AEMP — Артём Еремеев Медиа Плеер.<br>
+AEMP PRO — развитие проекта с новыми возможностями и оформлением.<br><br>
+<a href="https://github.com/artemeremeev29-dotcom/AEMP">GitHub проекта</a>
+</div>
+</section>
+
+<section>
+<h2>Администратор</h2>
+<button class="btn alt" id="open">Вход администратора</button>
+
+<form id="login">
+<input id="email" type="email" placeholder="Email" required>
+<input id="pass" type="password" placeholder="Пароль" required>
+<button class="btn">Войти</button>
+<p id="status" class="muted"></p>
+</form>
+
+<div id="admin" class="card">
+<h3>Публикация новости</h3>
+<form id="post">
+<input id="title" placeholder="Заголовок" required>
+<textarea id="body" placeholder="Текст новости" required></textarea>
+<button class="btn">Опубликовать</button>
+</form>
+<button class="btn alt" id="logout">Выйти</button>
+<p id="msg" class="muted"></p>
+</div>
+</section>
+
 </main>
-<footer>AEMP PRO · Enjoy the sound</footer>
+
+<footer>AEMP PRO 1.4 · Enjoy the sound</footer>
+
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import{getFirestore,collection,getDocs,addDoc,deleteDoc,doc,serverTimestamp}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-const app=initializeApp({apiKey:"AIzaSyBjFAD2XqAj66VOSaWphzZXkSgCf6RBkpU",authDomain:"armp-pro-71892.firebaseapp.com",projectId:"armp-pro-71892",storageBucket:"armp-pro-71892.firebasestorage.app",messagingSenderId:"732643397543",appId:"1:732643397543:web:84c9c5f2358c4431fff082",measurementId:"G-ZQ25RN82EB"}),auth=getAuth(app),db=getFirestore(app),uid="DyY7eHlKpCQDrj3Tp33Fyuj2LAt2",el=id=>document.getElementById(id);
+
+const app=initializeApp({
+apiKey:"AIzaSyBjFAD2XqAj66VOSaWphzZXkSgCf6RBkpU",
+authDomain:"armp-pro-71892.firebaseapp.com",
+projectId:"armp-pro-71892",
+storageBucket:"armp-pro-71892.firebasestorage.app",
+messagingSenderId:"732643397543",
+appId:"1:732643397543:web:84c9c5f2358c4431fff082",
+measurementId:"G-ZQ25RN82EB"
+});
+
+const auth=getAuth(app);
+const db=getFirestore(app);
+const uid="DyY7eHlKpCQDrj3Tp33Fyuj2LAt2";
+const el=id=>document.getElementById(id);
 const say=(id,s)=>el(id).textContent=s;
-el("open").onclick=()=>el("login").style.display=el("login").style.display==="block"?"none":"block";
-async function load(){try{const q=await getDocs(collection(db,"news"));el("list").replaceChildren();if(q.empty){say("list","Пока новостей нет.");return}q.forEach(d=>{const n=d.data(),c=document.createElement("article"),h=document.createElement("h3"),p=document.createElement("p");c.className="card";h.textContent=n.title||"Новость";p.textContent=n.body||n.text||"";c.append(h,p);if(auth.currentUser?.uid===uid){const b=document.createElement("button");b.className="btn alt";b.textContent="Удалить";b.onclick=async()=>{if(confirm("Удалить новость?")){await deleteDoc(doc(db,"news",d.id));load()}};c.append(b)}el("list").append(c)})}catch(e){say("list","Не удалось загрузить новости. Проверь доступ Firestore.")}}
-el("login").onsubmit=async e=>{e.preventDefault();say("status","Выполняется вход…");try{const c=await signInWithEmailAndPassword(auth,el("email").value.trim(),el("pass").value);if(c.user.uid!==uid){await signOut(auth);say("status","У этого аккаунта нет прав администратора.");return}say("status","Вход выполнен")}catch(e){say("status","Ошибка входа: "+e.code)}};
-el("post").onsubmit=async e=>{e.preventDefault();try{if(auth.currentUser?.uid!==uid)throw Error("Нет прав администратора");await addDoc(collection(db,"news"),{title:el("title").value.trim(),body:el("body").value.trim(),createdAt:serverTimestamp()});el("post").reset();say("msg","Новость опубликована");await load()}catch(e){say("msg","Ошибка: "+e.message)}};
+
+el("open").onclick=()=>{
+el("login").style.display=
+el("login").style.display==="block"?"none":"block";
+};
+
+async function load(){
+try{
+const q=await getDocs(collection(db,"news"));
+el("list").replaceChildren();
+
+if(q.empty){
+say("list","Пока новостей нет.");
+return;
+}
+
+q.forEach(d=>{
+const n=d.data();
+const c=document.createElement("article");
+const h=document.createElement("h3");
+const p=document.createElement("p");
+
+c.className="card";
+h.textContent=n.title||"Новость";
+p.textContent=n.body||n.text||"";
+c.append(h,p);
+
+if(auth.currentUser?.uid===uid){
+const b=document.createElement("button");
+b.className="btn alt";
+b.textContent="Удалить";
+b.onclick=async()=>{
+if(confirm("Удалить новость?")){
+await deleteDoc(doc(db,"news",d.id));
+load();
+}
+};
+c.append(b);
+}
+
+el("list").append(c);
+});
+
+}catch(e){
+say("list","Не удалось загрузить новости. Проверь доступ Firestore.");
+}
+}
+
+el("login").onsubmit=async e=>{
+e.preventDefault();
+say("status","Выполняется вход…");
+
+try{
+const c=await signInWithEmailAndPassword(
+auth,
+el("email").value.trim(),
+el("pass").value
+);
+
+if(c.user.uid!==uid){
+await signOut(auth);
+say("status","У этого аккаунта нет прав администратора.");
+return;
+}
+
+say("status","Вход выполнен");
+
+}catch(e){
+say("status","Ошибка входа: "+e.code);
+}
+};
+
+el("post").onsubmit=async e=>{
+e.preventDefault();
+
+try{
+if(auth.currentUser?.uid!==uid)
+throw Error("Нет прав администратора");
+
+await addDoc(collection(db,"news"),{
+title:el("title").value.trim(),
+body:el("body").value.trim(),
+createdAt:serverTimestamp()
+});
+
+el("post").reset();
+say("msg","Новость опубликована");
+await load();
+
+}catch(e){
+say("msg","Ошибка: "+e.message);
+}
+};
+
 el("logout").onclick=()=>signOut(auth);
-onAuthStateChanged(auth,u=>{const ok=u?.uid===uid;el("admin").style.display=ok?"block":"none";el("login").style.display=ok?"none":el("login").style.display;el("open").style.display=ok?"none":"inline-block";load()});
+
+onAuthStateChanged(auth,u=>{
+const ok=u?.uid===uid;
+el("admin").style.display=ok?"block":"none";
+el("login").style.display=ok?"none":el("login").style.display;
+el("open").style.display=ok?"none":"inline-block";
+load();
+});
 </script>
+
 </body>
 </html>
-
