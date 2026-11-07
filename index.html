@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AEMP PRO 1.4 — Enjoy the sound</title>
+<title>AEMP PRO — Enjoy the sound</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#171717;color:#eee;font:15px Arial,sans-serif}
@@ -23,10 +23,9 @@ h2{font-size:21px;border-bottom:1px solid #444;padding-bottom:10px}
 .card{background:#222;padding:16px;border-radius:7px;margin:10px 0}
 .card h3{margin:0 0 8px;color:#ff8c00}
 section{margin-bottom:28px}
-input,textarea{display:block;width:100%;padding:11px;margin:9px 0;background:#171717;color:#fff;border:1px solid #555;border-radius:4px;font:inherit}
-textarea{min-height:75px}
-#login,#admin{display:none}
 footer{text-align:center;padding:24px;color:#888;border-top:1px solid #333}
+.version{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.tag{color:#aaa;font-size:13px}
 </style>
 </head>
 <body>
@@ -34,9 +33,9 @@ footer{text-align:center;padding:24px;color:#888;border-top:1px solid #333}
 <header>
 <a class="brand" href="#">AEMP PRO</a>
 <nav>
-<a href="#news">Новости</a>
 <a href="#downloads">Загрузки</a>
-<a href="#extras">Скины</a>
+<a href="#old">Старые версии</a>
+<a href="#skins">Скины</a>
 <a href="#about">О проекте</a>
 </nav>
 </header>
@@ -46,40 +45,61 @@ footer{text-align:center;padding:24px;color:#888;border-top:1px solid #333}
 <div class="hero">
 <h1>Enjoy the sound</h1>
 <p class="muted">Твой музыкальный плеер. Твоя музыка. Твой AEMP.</p>
-<p><b>AEMP PRO 1.4</b></p>
-<a class="btn" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.4/AEMP-PRO-1.4-skins_mod.apk">Скачать для Android</a>
+<p><b>Последняя версия: AEMP PRO 1.4</b></p>
+<a class="btn" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.4/AEMP-PRO-1.4-skins_mod.apk">Скачать AEMP PRO 1.4</a>
 </div>
 
-<section id="news">
-<h2>Последние новости</h2>
-<div id="list" class="muted">Загрузка новостей…</div>
-</section>
-
 <section id="downloads">
-<h2>Загрузки</h2>
+<h2>Последняя версия</h2>
 <div class="card">
-<h3>AEMP PRO 1.4 для Android</h3>
-<p class="muted">Последняя версия музыкального плеера со встроенными скинами интерфейса.</p>
+<h3>AEMP PRO 1.4</h3>
+<p class="muted">Android · APK</p>
+<p>Добавлены встроенные скины интерфейса.</p>
 <a class="btn" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.4/AEMP-PRO-1.4-skins_mod.apk">Скачать APK</a>
 </div>
 </section>
 
-<section id="extras">
+<section id="old">
+<h2>Старые версии</h2>
+<p class="muted">Предыдущие выпуски AEMP PRO. Их можно скачать отдельно.</p>
+
+<div class="card">
+<div class="version">
+<div>
+<h3>AEMP PRO 1.3</h3>
+<span class="tag">Android · APK</span>
+</div>
+<a class="btn alt" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.4/AEMP-PRO_v1.3.apk">Скачать 1.3</a>
+</div>
+</div>
+
+<div class="card">
+<div class="version">
+<div>
+<h3>AEMP PRO 1.2</h3>
+<span class="tag">Android · APK</span>
+</div>
+<a class="btn alt" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.4/AEMP-PRO_v1.2.apk">Скачать 1.2</a>
+</div>
+</div>
+</section>
+
+<section id="skins">
 <h2>Встроенные скины</h2>
 
 <div class="card">
 <h3>AEMP Classic</h3>
-<p class="muted">Классический стиль интерфейса AEMP.</p>
+<p class="muted">Классический стиль интерфейса.</p>
 </div>
 
 <div class="card">
 <h3>AEMP Charm</h3>
-<p class="muted">Альтернативный стиль оформления.</p>
+<p class="muted">Альтернативное оформление плеера.</p>
 </div>
 
 <div class="card">
 <h3>AEMP Bliss</h3>
-<p class="muted">Ещё один вариант внешнего вида плеера.</p>
+<p class="muted">Ещё один вариант внешнего вида.</p>
 </div>
 
 <div class="card">
@@ -97,157 +117,9 @@ AEMP PRO — развитие проекта с новыми возможнос�
 </div>
 </section>
 
-<section>
-<h2>Администратор</h2>
-<button class="btn alt" id="open">Вход администратора</button>
-
-<form id="login">
-<input id="email" type="email" placeholder="Email" required>
-<input id="pass" type="password" placeholder="Пароль" required>
-<button class="btn">Войти</button>
-<p id="status" class="muted"></p>
-</form>
-
-<div id="admin" class="card">
-<h3>Публикация новости</h3>
-<form id="post">
-<input id="title" placeholder="Заголовок" required>
-<textarea id="body" placeholder="Текст новости" required></textarea>
-<button class="btn">Опубликовать</button>
-</form>
-<button class="btn alt" id="logout">Выйти</button>
-<p id="msg" class="muted"></p>
-</div>
-</section>
-
 </main>
 
-<footer>AEMP PRO 1.4 · Enjoy the sound</footer>
-
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import{getFirestore,collection,getDocs,addDoc,deleteDoc,doc,serverTimestamp}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
-const app=initializeApp({
-apiKey:"AIzaSyBjFAD2XqAj66VOSaWphzZXkSgCf6RBkpU",
-authDomain:"armp-pro-71892.firebaseapp.com",
-projectId:"armp-pro-71892",
-storageBucket:"armp-pro-71892.firebasestorage.app",
-messagingSenderId:"732643397543",
-appId:"1:732643397543:web:84c9c5f2358c4431fff082",
-measurementId:"G-ZQ25RN82EB"
-});
-
-const auth=getAuth(app);
-const db=getFirestore(app);
-const uid="DyY7eHlKpCQDrj3Tp33Fyuj2LAt2";
-const el=id=>document.getElementById(id);
-const say=(id,s)=>el(id).textContent=s;
-
-el("open").onclick=()=>{
-el("login").style.display=
-el("login").style.display==="block"?"none":"block";
-};
-
-async function load(){
-try{
-const q=await getDocs(collection(db,"news"));
-el("list").replaceChildren();
-
-if(q.empty){
-say("list","Пока новостей нет.");
-return;
-}
-
-q.forEach(d=>{
-const n=d.data();
-const c=document.createElement("article");
-const h=document.createElement("h3");
-const p=document.createElement("p");
-
-c.className="card";
-h.textContent=n.title||"Новость";
-p.textContent=n.body||n.text||"";
-c.append(h,p);
-
-if(auth.currentUser?.uid===uid){
-const b=document.createElement("button");
-b.className="btn alt";
-b.textContent="Удалить";
-b.onclick=async()=>{
-if(confirm("Удалить новость?")){
-await deleteDoc(doc(db,"news",d.id));
-load();
-}
-};
-c.append(b);
-}
-
-el("list").append(c);
-});
-
-}catch(e){
-say("list","Не удалось загрузить новости. Проверь доступ Firestore.");
-}
-}
-
-el("login").onsubmit=async e=>{
-e.preventDefault();
-say("status","Выполняется вход…");
-
-try{
-const c=await signInWithEmailAndPassword(
-auth,
-el("email").value.trim(),
-el("pass").value
-);
-
-if(c.user.uid!==uid){
-await signOut(auth);
-say("status","У этого аккаунта нет прав администратора.");
-return;
-}
-
-say("status","Вход выполнен");
-
-}catch(e){
-say("status","Ошибка входа: "+e.code);
-}
-};
-
-el("post").onsubmit=async e=>{
-e.preventDefault();
-
-try{
-if(auth.currentUser?.uid!==uid)
-throw Error("Нет прав администратора");
-
-await addDoc(collection(db,"news"),{
-title:el("title").value.trim(),
-body:el("body").value.trim(),
-createdAt:serverTimestamp()
-});
-
-el("post").reset();
-say("msg","Новость опубликована");
-await load();
-
-}catch(e){
-say("msg","Ошибка: "+e.message);
-}
-};
-
-el("logout").onclick=()=>signOut(auth);
-
-onAuthStateChanged(auth,u=>{
-const ok=u?.uid===uid;
-el("admin").style.display=ok?"block":"none";
-el("login").style.display=ok?"none":el("login").style.display;
-el("open").style.display=ok?"none":"inline-block";
-load();
-});
-</script>
+<footer>AEMP PRO · Enjoy the sound 🧡</footer>
 
 </body>
 </html>
