@@ -24,7 +24,6 @@ function isCurrentRelease(release) {
 
 function findAPK(release) {
     const assets = release.assets || [];
-
     const version = normalizeVersion(release.tag_name);
 
     const files = assets.filter(asset =>
@@ -33,7 +32,9 @@ function findAPK(release) {
     );
 
     return files.find(asset =>
-        normalizeVersion(asset.name).includes(version.replace(/\./g, "_")) ||
+        normalizeVersion(asset.name).includes(
+            version.replace(/\./g, "_")
+        ) ||
         normalizeVersion(asset.name).includes(version)
     ) || files[0] || null;
 }
@@ -46,6 +47,25 @@ function createLink(text, url) {
     link.href = url;
 
     return link;
+}
+
+function createIcon() {
+    const image = document.createElement("img");
+
+    image.src = "aemp-pro-icon.png";
+    image.alt = "AEMP PRO";
+    image.className = "aemp-app-icon";
+    image.width = 76;
+    image.height = 76;
+
+    image.style.width = "76px";
+    image.style.height = "76px";
+    image.style.minWidth = "76px";
+    image.style.border = "4px solid #080808";
+    image.style.borderRadius = "50%";
+    image.style.objectFit = "cover";
+
+    return image;
 }
 
 async function loadArchive() {
@@ -65,12 +85,11 @@ async function loadArchive() {
 
         const releases = await response.json();
 
-        const oldVersions = releases
-            .filter(release =>
-                !release.draft &&
-                !release.prerelease &&
-                !isCurrentRelease(release)
-            );
+        const oldVersions = releases.filter(release =>
+            !release.draft &&
+            !release.prerelease &&
+            !isCurrentRelease(release)
+        );
 
         archive.replaceChildren();
 
@@ -83,13 +102,46 @@ async function loadArchive() {
             const card = document.createElement("div");
             card.className = "archive-release";
 
+            card.style.display = "flex";
+            card.style.alignItems = "center";
+            card.style.flexWrap = "wrap";
+            card.style.gap = "16px";
+            card.style.padding = "14px 0";
+
+            const icon = createIcon();
+
+            const info = document.createElement("div");
+            info.style.flex = "1";
+            info.style.minWidth = "150px";
+
             const title = document.createElement("h2");
             title.textContent =
                 release.name || "AEMP PRO " + release.tag_name;
 
             const apk = findAPK(release);
 
-            card.appendChild(title);
+            info.appendChild(title);
+
+            if (release.published_at) {
+                const date = document.createElement("p");
+                date.className = "muted";
+
+                date.textContent =
+                    "Дата выпуска: " +
+                    new Date(release.published_at).toLocaleDateString(
+                        "ru-RU",
+                        {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric"
+                        }
+                    );
+
+                info.appendChild(date);
+            }
+
+            card.appendChild(icon);
+            card.appendChild(info);
 
             if (apk) {
                 card.appendChild(
@@ -99,11 +151,12 @@ async function loadArchive() {
                 const missing = document.createElement("p");
                 missing.className = "muted";
                 missing.textContent = "APK в этом релизе отсутствует.";
+
                 card.appendChild(missing);
             }
 
             card.appendChild(
-                createLink("Открыть GitHub", release.html_url)
+                createLink("GitHub", release.html_url)
             );
 
             archive.appendChild(card);
