@@ -5,21 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Скачать AEMP PRO — официальный сайт AEMP</title>
+    <title>Скачать AEMP — официальный сайт</title>
 
-    <meta name="description" content="Скачай AEMP PRO — музыкальный плеер от AEMP. Актуальные версии APK, информация об обновлениях и история выпусков.">
-
-    <meta name="keywords" content="скачать AEMP, AEMP PRO APK, музыкальный плеер Android, AEMP скачать, аудиоплеер">
-
+    <meta name="description" content="Скачивайте AEMP и AEMP PRO. Актуальные версии, обновления и архив выпусков.">
+    <meta name="keywords" content="AEMP, AEMP PRO, скачать AEMP, музыкальный плеер">
     <meta name="author" content="Artem Eremeev">
     <meta name="robots" content="index, follow">
 
     <link rel="canonical" href="https://artemeremeev29-dotcom.github.io/AEMP-site/downloads.html">
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Скачать AEMP PRO">
-    <meta property="og:description" content="Официальная страница загрузки музыкального плеера AEMP PRO.">
-    <meta property="og:url" content="https://artemeremeev29-dotcom.github.io/AEMP-site/downloads.html">
+    <meta property="og:title" content="Скачать AEMP">
+    <meta property="og:description" content="Официальная страница загрузки AEMP.">
 
     <meta name="theme-color" content="#171717">
 
@@ -34,44 +31,93 @@
         <p>Скачивайте актуальные версии продуктов AEMP.</p>
     </header>
 
+    <!-- АКТУАЛЬНАЯ ВЕРСИЯ -->
+
     <section class="card">
-        <div class="version" id="latestVersion">Загрузка...</div>
-        <p class="muted" id="releaseStatus">Проверяем последнюю версию на GitHub</p>
+
+        <div class="version" id="latestVersion">
+            Загрузка...
+        </div>
+
+        <p class="muted" id="releaseStatus">
+            Проверяем последнюю версию...
+        </p>
 
         <p id="releaseDescription">
-            Получаем информацию о последнем выпуске...
+            Получаем информацию о выпуске...
         </p>
 
         <p class="muted" id="releaseDate"></p>
 
-        <a id="downloadButton" class="button"
-           href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/latest">
-            Открыть GitHub
+        <a id="downloadButton"
+           class="button"
+           href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/latest"
+           style="display:none;">
+
+            Скачать APK
+
         </a>
+
+        <a id="githubButton"
+           class="secondary-button"
+           href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/latest"
+           target="_blank"
+           rel="noopener">
+
+            Перейти на GitHub
+
+        </a>
+
     </section>
 
+
+    <!-- AEMP CLASSIC -->
+
     <section class="card">
+
         <h2>AEMP Classic</h2>
+
         <p>Классическая версия музыкального проигрывателя.</p>
+
         <a class="secondary-button"
            href="https://github.com/artemeremeev29-dotcom/AEMP/releases">
+
             Открыть загрузки
+
         </a>
+
     </section>
+
+
+    <!-- АРХИВ -->
 
     <section class="card">
-        <h2>Старые версии</h2>
-        <p>Предыдущие выпуски AEMP PRO.</p>
-        <a class="secondary-button" href="old.html" target="_blank" rel="noopener">
-            Открыть архив
-        </a>
+
+        <h2>Архив версий</h2>
+
+        <p class="muted">
+            Предыдущие выпуски AEMP PRO.
+        </p>
+
+        <div id="oldVersions">
+
+            <p class="muted">
+                Загружаем историю версий...
+            </p>
+
+        </div>
+
     </section>
 
-    <footer>© AEMP Project. Enjoy the sound.</footer>
+
+    <footer>
+        © AEMP Project. Enjoy the sound.
+    </footer>
 
 </main>
 
 <script src="shell.js"></script>
 <script src="release.js"></script>
+
 </body>
 </html>
