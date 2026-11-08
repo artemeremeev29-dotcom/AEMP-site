@@ -10,10 +10,16 @@ async function loadLatestRelease() {
         "https://api.github.com/repos/artemeremeev29-dotcom/AEMP-PRO/releases/latest";
 
     try {
-        const response = await fetch(apiUrl);
+        status.textContent = "Подключение к GitHub API...";
+
+        const response = await fetch(apiUrl, {
+            headers: {
+                "Accept": "application/vnd.github+json"
+            }
+        });
 
         if (!response.ok) {
-            throw new Error("GitHub API: " + response.status);
+            throw new Error("HTTP " + response.status);
         }
 
         const release = await response.json();
@@ -22,10 +28,8 @@ async function loadLatestRelease() {
             asset.name.toLowerCase().endsWith(".apk")
         );
 
-        version.textContent = "AEMP PRO " +
-            (release.tag_name || release.name || "");
-
-        status.textContent = "Последняя опубликованная версия";
+        version.textContent = "AEMP PRO " + release.tag_name;
+        status.textContent = "Последняя версия на GitHub";
 
         description.textContent = release.body ||
             "Последний официальный выпуск AEMP PRO.";
@@ -37,25 +41,25 @@ async function loadLatestRelease() {
 
         if (apk) {
             button.href = apk.browser_download_url;
-            button.textContent = "Скачать AEMP PRO";
-            button.style.display = "inline-block";
+            button.textContent = "Скачать " + apk.name;
         } else {
             button.href = release.html_url;
-            button.textContent = "Открыть релиз на GitHub";
+            button.textContent = "Открыть релиз";
+            status.textContent = "В релизе не найден APK-файл";
         }
 
     } catch (error) {
-        console.error(error);
+        console.error("AEMP GitHub API:", error);
 
         version.textContent = "AEMP PRO";
-        status.textContent = "Не удалось получить последнюю версию";
+        status.textContent = "Ошибка: " + error.message;
         description.textContent =
-            "Попробуйте открыть страницу релизов GitHub.";
+            "Не удалось получить информацию о последнем релизе.";
 
         button.href =
             "https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases";
 
-        button.textContent = "Открыть GitHub";
+        button.textContent = "Открыть релизы GitHub";
     }
 }
 
