@@ -1,72 +1,91 @@
 
+const API_URL =
+  "https://api.github.com/repos/artemeremeev29-dotcom/AEMP-PRO/releases?per_page=10";
+
+const elements = {
+  version: document.getElementById("latestVersion"),
+  description: document.getElementById("releaseDescription"),
+  date: document.getElementById("releaseDate"),
+  status: document.getElementById("releaseStatus"),
+  button: document.getElementById("downloadButton")
+};
+
+function setStatus(message) {
+  if (elements.status) {
+    elements.status.textContent = message;
+  }
+}
+
 async function loadLatestRelease() {
-    const version = document.getElementById("latestVersion");
-    const description = document.getElementById("releaseDescription");
-    const date = document.getElementById("releaseDate");
-    const status = document.getElementById("releaseStatus");
-    const button = document.getElementById("downloadButton");
+  try {
+    setStatus("Проверяем последнюю версию на GitHub...");
 
-    const apiUrl =
-        "https://api.github.com/repos/artemeremeev29-dotcom/AEMP-PRO/releases?per_page=10";
+    const response = await fetch(API_URL, {
+      headers: {
+        Accept: "application/vnd.github+json"
+      },
+      cache: "no-cache"
+    });
 
-    try {
-        status.textContent = "Подключение к GitHub...";
-
-        const response = await fetch(apiUrl, {
-            headers: {
-                Accept: "application/vnd.github+json"
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error("HTTP " + response.status);
-        }
-
-        const releases = await response.json();
-
-        const release = releases.find(item =>
-            !item.draft &&
-            !item.prerelease &&
-            item.assets.some(asset =>
-                asset.name.toLowerCase().endsWith(".apk")
-            )
-        );
-
-        if (!release) {
-            throw new Error("Опубликованные APK-релизы не найдены");
-        }
-
-        const apk = release.assets.find(asset =>
-            asset.name.toLowerCase().endsWith(".apk")
-        );
-
-        version.textContent = "AEMP PRO " + release.tag_name;
-        status.textContent = "Последняя доступная версия";
-
-        description.textContent = release.body ||
-            "Официальный выпуск AEMP PRO.";
-
-        date.textContent = release.published_at
-            ? "Дата публикации: " +
-              new Date(release.published_at).toLocaleDateString("ru-RU")
-            : "";
-
-        button.href = apk.browser_download_url;
-        button.textContent = "Скачать " + apk.name;
-        button.style.display = "inline-block";
-
-    } catch (error) {
-        console.error("AEMP API:", error);
-
-        version.textContent = "AEMP PRO";
-        status.textContent = "Ошибка загрузки";
-        description.textContent = error.message;
-
-        button.href =
-            "https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases";
-
-        button.textContent = "Открыть GitHub";
+    if (!response.ok) {
+      throw new Error(`GitHub API: HTTP ${response.status}`);
     }
+
+    const releases = await response.json();
+
+    if (!Array.isArray(releases)) {
+      throw new Error("Неверный формат ответа GitHub");
+    }
+
+    const latest = releases.find(
+      release => !release.draft && !release.prerelease
+    );
+
+    if (!latest) {
+      throw new Error("Опубликованные релизы не найдены");
+    }
+
+    // Ищем APK в последнем релизе
+    const apk = latest.assets.find(asset =>
+      asset.name.toLowerCase().endsWith(".apk")
+    );
+
+    if (elements.version) {
+      elements.version.textContent =
+        `AEMP PRO ${latest.tag_name}`;
+    }
+
+    if (elements.description) {
+      elements.description.textContent =
+        latest.body || "Описание обновления пока отсутствует.";
+    }
+
+    if (elements.date) {
+      elements.date.textContent = latest.published_at
+        ? new Date(latest.published_at).toLocaleDateString("ru-RU")
+        : "Дата не указана";
+    }
+
+    if (elements.button) {
+      if (apk) {
+        elements.button.href = apk.browser_download_url;
+        elements.button.style.display = "";
+        elements.button.removeAttribute("aria-disabled");
+      } else {
+        elements.button.style.display = "none";
+      }
+    }
+
+    setStatus(
+      apk
+        ? "Последняя версия успешно загружена!"
+        : "Релиз найден, но APK в нём отсутствует."
+    );
+
+  } catch (error) {
+    console.error("AEMP release error:", error);
+    setStatus("Не удалось загрузить релиз: " + error.message);
+  }
 }
 
 loadLatestRelease();
