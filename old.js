@@ -7,10 +7,19 @@ const CURRENT_VERSION = "1.5";
 const status = document.getElementById("archiveStatus");
 const archive = document.getElementById("archiveList");
 
-function normalizeVersion(tag) {
-    return String(tag || "")
+function normalizeVersion(value) {
+    return String(value || "")
+        .trim()
         .replace(/^v/i, "")
-        .trim();
+        .toLowerCase();
+}
+
+function isCurrentRelease(release) {
+    const tag = normalizeVersion(release.tag_name);
+    const name = normalizeVersion(release.name);
+
+    return tag === CURRENT_VERSION ||
+           name.includes(CURRENT_VERSION);
 }
 
 function findAPK(release) {
@@ -18,20 +27,15 @@ function findAPK(release) {
 
     const version = normalizeVersion(release.tag_name);
 
-    const apkFiles = assets.filter(asset =>
+    const files = assets.filter(asset =>
         asset.name.toLowerCase().endsWith(".apk") &&
         asset.browser_download_url
     );
 
-    return apkFiles.find(asset =>
-        asset.name.toLowerCase().includes(version)
-    ) || apkFiles[0] || null;
-}
-
-function formatDate(date) {
-    return date
-        ? new Date(date).toLocaleDateString("ru-RU")
-        : "Дата не указана";
+    return files.find(asset =>
+        normalizeVersion(asset.name).includes(version.replace(/\./g, "_")) ||
+        normalizeVersion(asset.name).includes(version)
+    ) || files[0] || null;
 }
 
 function createLink(text, url) {
@@ -52,7 +56,7 @@ async function loadArchive() {
             headers: {
                 Accept: "application/vnd.github+json"
             },
-            cache: "no-cache"
+            cache: "no-store"
         });
 
         if (!response.ok) {
@@ -65,11 +69,7 @@ async function loadArchive() {
             .filter(release =>
                 !release.draft &&
                 !release.prerelease &&
-                normalizeVersion(release.tag_name) !== CURRENT_VERSION
-            )
-            .sort((a, b) =>
-                new Date(b.published_at || 0) -
-                new Date(a.published_at || 0)
+                !isCurrentRelease(release)
             );
 
         archive.replaceChildren();
@@ -87,15 +87,9 @@ async function loadArchive() {
             title.textContent =
                 release.name || "AEMP PRO " + release.tag_name;
 
-            const date = document.createElement("p");
-            date.className = "muted";
-            date.textContent =
-                "Дата выпуска: " + formatDate(release.published_at);
-
             const apk = findAPK(release);
 
             card.appendChild(title);
-            card.appendChild(date);
 
             if (apk) {
                 card.appendChild(
