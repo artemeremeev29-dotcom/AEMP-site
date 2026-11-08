@@ -17,7 +17,58 @@
     <meta name="theme-color" content="#171717">
 
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        .archive-release {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #383838;
+        }
+
+        .archive-release:last-child {
+            border-bottom: none;
+        }
+
+        .archive-release .aemp-app-icon {
+            width: 76px;
+            height: 76px;
+            min-width: 76px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #080808;
+            box-shadow: 0 0 0 1px #FF8C00;
+        }
+
+        .archive-release-info {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .archive-release-info h2 {
+            margin: 0 0 6px;
+        }
+
+        .archive-release-info p {
+            margin: 0;
+        }
+
+        @media (max-width: 480px) {
+            .archive-release {
+                gap: 12px;
+            }
+
+            .archive-release .aemp-app-icon {
+                width: 60px;
+                height: 60px;
+                min-width: 60px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
 <main id="page-content" data-page="old">
@@ -59,7 +110,7 @@
 </main>
 
 <script src="shell.js"></script>
-<script src="old.js?v=3"></script>
+<script src="old.js?v=4"></script>
 
 </body>
 </html>
