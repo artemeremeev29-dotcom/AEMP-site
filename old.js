@@ -2,15 +2,30 @@
 const API_URL =
     "https://api.github.com/repos/artemeremeev29-dotcom/AEMP-PRO/releases?per_page=100";
 
+const CURRENT_VERSION = "1.5";
+
 const status = document.getElementById("archiveStatus");
 const archive = document.getElementById("archiveList");
+
+function normalizeVersion(tag) {
+    return String(tag || "")
+        .replace(/^v/i, "")
+        .trim();
+}
 
 function findAPK(release) {
     const assets = release.assets || [];
 
-    return assets.find(asset =>
-        asset.name.toLowerCase().endsWith(".apk")
+    const version = normalizeVersion(release.tag_name);
+
+    const apkFiles = assets.filter(asset =>
+        asset.name.toLowerCase().endsWith(".apk") &&
+        asset.browser_download_url
     );
+
+    return apkFiles.find(asset =>
+        asset.name.toLowerCase().includes(version)
+    ) || apkFiles[0] || null;
 }
 
 function formatDate(date) {
@@ -31,6 +46,8 @@ function createLink(text, url) {
 
 async function loadArchive() {
     try {
+        status.textContent = "Загружаем архив AEMP...";
+
         const response = await fetch(API_URL, {
             headers: {
                 Accept: "application/vnd.github+json"
@@ -44,20 +61,16 @@ async function loadArchive() {
 
         const releases = await response.json();
 
-        const versions = releases
+        const oldVersions = releases
             .filter(release =>
                 !release.draft &&
-                !release.prerelease
+                !release.prerelease &&
+                normalizeVersion(release.tag_name) !== CURRENT_VERSION
             )
             .sort((a, b) =>
                 new Date(b.published_at || 0) -
                 new Date(a.published_at || 0)
             );
-
-        // Последний релиз считается актуальным.
-        // Остальные показываются в архиве.
-
-        const oldVersions = versions.slice(1);
 
         archive.replaceChildren();
 
