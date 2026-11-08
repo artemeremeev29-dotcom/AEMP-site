@@ -1,221 +1,53 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AEMP PRO — Enjoy the sound</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#171717;color:#eee;font:15px Arial,sans-serif}
-a{color:#ff8c00;text-decoration:none}
-a:hover{color:#fff}
-header{background:#222;border-bottom:2px solid #ff8c00;padding:16px max(calc((100% - 1000px)/2),18px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.brand{font-size:24px;font-weight:bold;color:#ff8c00}
-nav{display:flex;gap:16px;flex-wrap:wrap}
-main{max-width:1000px;margin:auto;padding:24px 16px}
-.hero{background:#222;border-radius:8px;padding:28px;margin-bottom:20px}
-.hero h1{font-size:32px;margin:0 0 10px}
-.muted{color:#aaa}
-.btn{display:inline-block;background:#ff8c00;color:#171717;padding:11px 15px;border-radius:5px;font-weight:bold;margin:8px 8px 0 0;border:0;cursor:pointer}
-.btn:hover{background:#ffa52e;color:#111}
-.btn.alt{background:#333;color:#ff8c00;border:1px solid #ff8c00}
-h2{font-size:21px;border-bottom:1px solid #444;padding-bottom:10px}
-.card{background:#222;padding:16px;border-radius:7px;margin:10px 0}
-.card h3{margin:0 0 8px;color:#ff8c00}
-section{margin-bottom:28px}
-footer{text-align:center;padding:24px;color:#888;border-top:1px solid #333}
-.version{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.tag{color:#aaa;font-size:13px}
-.status{font-size:13px;color:#aaa;margin-top:12px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEMP — Enjoy the sound</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-<a class="brand" href="#">AEMP PRO</a>
-<nav>
-<a href="#downloads">Загрузки</a>
-<a href="#old">Старые версии</a>
-<a href="#skins">Скины</a>
-<a href="#about">О проекте</a>
-</nav>
-</header>
+<main id="page-content" data-page="home">
+    <header class="page-header">
+        <h1>Что такое <span class="orange">AEMP</span>?</h1>
+        <p>Добро пожаловать на официальный сайт проекта AEMP.</p>
+    </header>
 
-<main>
+    <section class="card">
+        <h2>🎵 AEMP — Enjoy the sound</h2>
+        <p>
+            AEMP — это проект музыкального проигрывателя,
+            созданный для удобного прослушивания музыки,
+            настройки внешнего вида и персонализации.
+        </p>
+        <p>
+            Мы развиваем проект, добавляем новые функции,
+            создаём скины и работаем над улучшением пользовательского опыта.
+        </p>
+        <a href="downloads.html" target="_blank" class="button">
+            Перейти к загрузкам
+        </a>
+    </section>
 
-<div class="hero">
-<h1>Enjoy the sound</h1>
-<p class="muted">Твой музыкальный плеер. Твоя музыка. Твой AEMP.</p>
-<p><b>Последняя версия: <span id="heroVersion">AEMP PRO 1.4</span></b></p>
-<a class="btn" id="heroDownload"
-href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/latest">
-Скачать AEMP PRO
-</a>
-<p class="status" id="releaseStatus">Проверка обновлений...</p>
-</div>
+    <section class="card">
+        <h2>Наши продукты</h2>
+        <p><span class="orange">AEMP Classic</span> — классический музыкальный плеер.</p>
+        <p><span class="orange">AEMP PRO</span> — расширенная версия с дополнительными возможностями.</p>
+    </section>
 
-<section id="downloads">
-<h2>Последняя версия</h2>
-<div class="card">
-<h3 id="releaseVersion">AEMP PRO 1.4</h3>
-<p class="muted" id="releaseInfo">Android · APK</p>
-<p id="releaseDescription">Добавлены встроенные скины интерфейса.</p>
-<a class="btn" id="releaseDownload"
-href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/latest">
-Скачать APK
-</a>
-</div>
-</section>
+    <section class="card">
+        <h2>Добро пожаловать!</h2>
+        <p>
+            Здесь вы найдёте загрузки, старые версии,
+            скины, новости и информацию о разработке.
+        </p>
+    </section>
 
-<section id="old">
-<h2>Старые версии</h2>
-<p class="muted">Предыдущие выпуски AEMP PRO. Их можно скачать отдельно.</p>
-
-<div class="card">
-<div class="version">
-<div>
-<h3>AEMP PRO 1.3</h3>
-<span class="tag">Android · APK</span>
-</div>
-<a class="btn alt" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/tag/1.3">Скачать 1.3</a>
-</div>
-</div>
-
-<div class="card">
-<div class="version">
-<div>
-<h3>AEMP PRO 1.2</h3>
-<span class="tag">Android · APK</span>
-</div>
-<a class="btn alt" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/tag/1.2">Скачать 1.2</a>
-</div>
-</div>
-</section>
-
-<section id="skins">
-<h2>Встроенные скины</h2>
-
-<div class="card">
-<h3>AEMP Classic</h3>
-<p class="muted">Классический стиль интерфейса.</p>
-</div>
-
-<div class="card">
-<h3>AEMP Charm</h3>
-<p class="muted">Альтернативное оформление плеера.</p>
-</div>
-
-<div class="card">
-<h3>AEMP Bliss</h3>
-<p class="muted">Ещё один вариант внешнего вида.</p>
-</div>
-
-<div class="card">
-<h3>AEMP Aero</h3>
-<p class="muted">Оформление в стиле Windows Aero.</p>
-</div>
-</section>
-
-<section id="about">
-<h2>О проекте</h2>
-<div class="card">
-AEMP — Артём Еремеев Медиа Плеер.<br>
-AEMP PRO — развитие проекта с новыми возможностями и оформлением.<br><br>
-<a href="https://github.com/artemeremeev29-dotcom/AEMP">GitHub проекта</a>
-</div>
-</section>
-
+    <footer>© AEMP Project. Enjoy the sound.</footer>
 </main>
 
-<footer>AEMP PRO · Enjoy the sound 🧡</footer>
-
-<script>
-const OWNER = "artemeremeev29-dotcom";
-const REPO = "AEMP-PRO";
-
-const API =
-`https://api.github.com/repos/${OWNER}/${REPO}/releases/latest`;
-
-const FALLBACK = {
- version: "1.4",
- url: "https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/latest",
- description: "Добавлены встроенные скины интерфейса."
-};
-
-async function loadLatestRelease() {
- const status = document.getElementById("releaseStatus");
-
- try {
-  const response = await fetch(API, {
-   headers: { "Accept": "application/vnd.github+json" }
-  });
-
-  if (!response.ok) {
-   throw new Error("GitHub API: " + response.status);
-  }
-
-  const release = await response.json();
-
-  const apk = release.assets.find(asset =>
-   asset.name.toLowerCase().endsWith(".apk")
-  );
-
-  if (!apk) {
-   throw new Error("В релизе не найден APK");
-  }
-
-  const version = release.tag_name.replace(/^v/i, "");
-
-  const description = release.body?.trim()
-   || "Новый выпуск AEMP PRO.";
-
-  document.getElementById("heroVersion").textContent =
-   "AEMP PRO " + version;
-
-  document.getElementById("releaseVersion").textContent =
-   "AEMP PRO " + version;
-
-  document.getElementById("releaseInfo").textContent =
-   "Android · APK · " +
-   new Date(release.published_at).toLocaleDateString("ru-RU");
-
-  document.getElementById("releaseDescription").textContent =
-   description;
-
-  document.getElementById("heroDownload").href =
-   apk.browser_download_url;
-
-  document.getElementById("releaseDownload").href =
-   apk.browser_download_url;
-
-  status.textContent = "Последняя версия успешно загружена с GitHub.";
-
- } catch (error) {
-  console.error(error);
-
-  document.getElementById("heroVersion").textContent =
-   "AEMP PRO " + FALLBACK.version;
-
-  document.getElementById("releaseVersion").textContent =
-   "AEMP PRO " + FALLBACK.version;
-
-  document.getElementById("releaseDescription").textContent =
-   FALLBACK.description;
-
-  document.getElementById("heroDownload").href =
-   FALLBACK.url;
-
-  document.getElementById("releaseDownload").href =
-   FALLBACK.url;
-
-  status.textContent =
-   "Не удалось проверить обновления. Показана резервная версия.";
- }
-}
-
-loadLatestRelease();
-</script>
-
+<script src="shell.js"></script>
 </body>
 </html>
