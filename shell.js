@@ -33,6 +33,11 @@ const pages = [
     id: "about",
     title: "О проекте",
     url: "about.html"
+  },
+  {
+    id: "license",
+    title: "Лицензионное соглашение",
+    url: "license.html"
   }
 ];
 
