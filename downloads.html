@@ -4,25 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#171717">
     <title>Загрузки — AEMP</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <main id="page-content" data-page="downloads">
+
     <header class="page-header">
         <h1>Загрузки</h1>
         <p>Скачивайте актуальные версии продуктов AEMP.</p>
     </header>
 
     <section class="card">
-        <h2>AEMP PRO</h2>
-        <div class="version" id="latestVersion">Загрузка версии...</div>
-        <p id="releaseDescription">Получаем информацию о последнем выпуске...</p>
+        <div class="version" id="latestVersion">Загрузка...</div>
+        <p class="muted" id="releaseStatus">Проверяем последнюю версию на GitHub</p>
+
+        <p id="releaseDescription">
+            Получаем информацию о последнем выпуске...
+        </p>
+
         <p class="muted" id="releaseDate"></p>
 
-        <a id="downloadButton" class="button" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/latest">
-            Скачать AEMP PRO
+        <a id="downloadButton" class="button"
+           href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/latest">
+            Открыть GitHub
         </a>
     </section>
 
@@ -31,11 +38,20 @@
         <p>Классическая версия музыкального проигрывателя.</p>
         <a class="secondary-button"
            href="https://github.com/artemeremeev29-dotcom/AEMP/releases">
-           Открыть загрузки
+            Открыть загрузки
         </a>
     </section>
 
-    <footer>© AEMP Project</footer>
+    <section class="card">
+        <h2>Старые версии</h2>
+        <p>Предыдущие выпуски AEMP PRO.</p>
+        <a class="secondary-button" href="old.html" target="_blank" rel="noopener">
+            Открыть архив
+        </a>
+    </section>
+
+    <footer>© AEMP Project. Enjoy the sound.</footer>
+
 </main>
 
 <script src="shell.js"></script>
