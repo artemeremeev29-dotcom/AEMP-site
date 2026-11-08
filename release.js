@@ -1,5 +1,6 @@
+
 const API_URL =
-    "https://api.github.com/repos/artemeremeev29-dotcom/AEMP-PRO/releases?per_page=20";
+    "https://api.github.com/repos/artemeremeev29-dotcom/AEMP-PRO/releases?per_page=100";
 
 const elements = {
     version: document.getElementById("latestVersion"),
@@ -7,12 +8,11 @@ const elements = {
     date: document.getElementById("releaseDate"),
     status: document.getElementById("releaseStatus"),
     button: document.getElementById("downloadButton"),
-    github: document.getElementById("githubButton"),
-    archive: document.getElementById("oldVersions")
+    github: document.getElementById("githubButton")
 };
 
 
-// ОЧИСТКА ОПИСАНИЯ
+// Очистка описания
 
 function cleanDescription(text) {
     return (text || "")
@@ -25,32 +25,22 @@ function cleanDescription(text) {
 }
 
 
-// ПОЛУЧЕНИЕ НОМЕРА ВЕРСИИ
-
-function getVersion(tag) {
-    return (tag || "")
-        .replace(/^v/i, "")
-        .split(/[+-]/)[0]
-        .split(".")
-        .map(part => parseInt(part, 10) || 0);
-}
-
-
-// СРАВНЕНИЕ ВЕРСИЙ
+// Сравнение версий
 
 function compareVersions(a, b) {
-    const va = getVersion(a.tag_name);
-    const vb = getVersion(b.tag_name);
+    const getParts = tag =>
+        tag.replace(/^v/i, "")
+           .split(/[.+_-]/)
+           .map(part => parseInt(part, 10) || 0);
 
-    const length = Math.max(va.length, vb.length);
+    const first = getParts(a.tag_name);
+    const second = getParts(b.tag_name);
 
-    for (let i = 0; i < length; i++) {
-        const x = va[i] || 0;
-        const y = vb[i] || 0;
+    for (let i = 0; i < Math.max(first.length, second.length); i++) {
+        const x = first[i] || 0;
+        const y = second[i] || 0;
 
-        if (x !== y) {
-            return y - x;
-        }
+        if (x !== y) return y - x;
     }
 
     return new Date(b.published_at || 0) -
@@ -58,35 +48,34 @@ function compareVersions(a, b) {
 }
 
 
-// ПОИСК APK
+// Поиск APK
 
 function findAPK(release) {
     const assets = release.assets || [];
 
     const apkFiles = assets.filter(asset =>
-        asset.name.toLowerCase().endsWith(".apk")
+        asset.name.toLowerCase().endsWith(".apk") &&
+        asset.browser_download_url
     );
 
-    if (!apkFiles.length) {
-        return null;
-    }
+    if (!apkFiles.length) return null;
 
     const version = release.tag_name
         .replace(/^v/i, "")
         .toLowerCase();
 
-    const normalizedVersion = version.replace(/\./g, "_");
+    const normalized = version.replace(/\./g, "_");
 
     return apkFiles.find(asset => {
         const name = asset.name.toLowerCase();
 
-        return name.includes(version) ||
-               name.includes(normalizedVersion);
+        return name.includes(normalized) ||
+               name.includes(version);
     }) || apkFiles[0];
 }
 
 
-// ФОРМАТИРОВАНИЕ ДАТЫ
+// Дата
 
 function formatDate(date) {
     if (!date) return "Дата не указана";
@@ -95,87 +84,7 @@ function formatDate(date) {
 }
 
 
-// СОЗДАНИЕ КНОПКИ
-
-function createLink(text, url, className) {
-    const link = document.createElement("a");
-
-    link.textContent = text;
-    link.href = url;
-    link.className = className;
-
-    return link;
-}
-
-
-// ОТОБРАЖЕНИЕ АРХИВА
-
-function renderArchive(releases, latest) {
-    if (!elements.archive) return;
-
-    elements.archive.replaceChildren();
-
-    const oldReleases = releases.filter(release =>
-        release.id !== latest.id
-    );
-
-    if (!oldReleases.length) {
-        const message = document.createElement("p");
-        message.className = "muted";
-        message.textContent = "Предыдущих версий пока нет.";
-
-        elements.archive.appendChild(message);
-        return;
-    }
-
-    oldReleases.forEach(release => {
-        const card = document.createElement("div");
-
-        card.className = "archive-release";
-
-        const title = document.createElement("h3");
-
-        title.textContent =
-            release.name || `AEMP PRO ${release.tag_name}`;
-
-        const date = document.createElement("p");
-
-        date.className = "muted";
-        date.textContent =
-            "Выпущено: " + formatDate(release.published_at);
-
-        const apk = findAPK(release);
-
-        const actions = document.createElement("div");
-
-        if (apk) {
-            actions.appendChild(
-                createLink(
-                    "Скачать APK",
-                    apk.browser_download_url,
-                    "secondary-button"
-                )
-            );
-        }
-
-        actions.appendChild(
-            createLink(
-                "GitHub",
-                release.html_url,
-                "secondary-button"
-            )
-        );
-
-        card.appendChild(title);
-        card.appendChild(date);
-        card.appendChild(actions);
-
-        elements.archive.appendChild(card);
-    });
-}
-
-
-// ЗАГРУЗКА РЕЛИЗОВ
+// Загрузка последнего релиза
 
 async function loadLatestRelease() {
     try {
@@ -192,30 +101,35 @@ async function loadLatestRelease() {
         });
 
         if (!response.ok) {
-            throw new Error(`GitHub API: HTTP ${response.status}`);
+            throw new Error("GitHub API: HTTP " + response.status);
         }
 
         const releases = await response.json();
 
         const stableReleases = releases
             .filter(release =>
-                !release.draft && !release.prerelease
+                !release.draft &&
+                !release.prerelease
             )
             .sort(compareVersions);
 
         if (!stableReleases.length) {
-            throw new Error("Опубликованные релизы не найдены");
+            throw new Error("Релизы не найдены");
         }
 
         const latest = stableReleases[0];
         const apk = findAPK(latest);
 
-        // АКТУАЛЬНАЯ ВЕРСИЯ
+
+        // Название версии
 
         if (elements.version) {
             elements.version.textContent =
-                latest.name || `AEMP PRO ${latest.tag_name}`;
+                latest.name || "AEMP PRO " + latest.tag_name;
         }
+
+
+        // Описание
 
         if (elements.description) {
             elements.description.textContent =
@@ -223,17 +137,26 @@ async function loadLatestRelease() {
                 "Информация об обновлении отсутствует.";
         }
 
+
+        // Дата
+
         if (elements.date) {
             elements.date.textContent =
                 formatDate(latest.published_at);
         }
+
+
+        // ПРЯМОЕ СКАЧИВАНИЕ APK
 
         if (elements.button) {
             if (apk) {
                 elements.button.href =
                     apk.browser_download_url;
 
-                elements.button.download = apk.name;
+                elements.button.removeAttribute("target");
+                elements.button.removeAttribute("rel");
+
+                elements.button.setAttribute("download", apk.name);
                 elements.button.textContent = "Скачать APK";
                 elements.button.style.display = "";
             } else {
@@ -241,19 +164,27 @@ async function loadLatestRelease() {
             }
         }
 
+
+        // ОТДЕЛЬНАЯ ССЫЛКА НА GITHUB
+
         if (elements.github) {
             elements.github.href = latest.html_url;
+            elements.github.target = "_blank";
+            elements.github.rel = "noopener";
+            elements.github.textContent = "Перейти к релизу на GitHub";
         }
+
+
+        // Статус
 
         if (elements.status) {
             elements.status.textContent = apk
                 ? "Последняя версия доступна для скачивания"
-                : "Релиз найден, APK пока отсутствует";
+                : "Релиз найден, но APK отсутствует";
         }
 
-        // АРХИВ ПРЕДЫДУЩИХ ВЕРСИЙ
-
-        renderArchive(stableReleases, latest);
+        console.log("AEMP latest release:", latest);
+        console.log("AEMP APK:", apk);
 
     } catch (error) {
         console.error("AEMP API:", error);
@@ -262,14 +193,7 @@ async function loadLatestRelease() {
             elements.status.textContent =
                 "Ошибка загрузки: " + error.message;
         }
-
-        if (elements.archive) {
-            elements.archive.textContent =
-                "Не удалось загрузить историю версий.";
-        }
     }
 }
 
-
 loadLatestRelease();
-  
