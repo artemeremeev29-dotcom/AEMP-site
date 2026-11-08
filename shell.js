@@ -1,56 +1,119 @@
 
+// ========================================
+// AEMP WEBSITE — NAVIGATION SYSTEM
+// ========================================
+
 const pages = [
-    { id: "home", title: "Главная", url: "index.html", icon: "⌂" },
-    { id: "downloads", title: "Загрузки", url: "downloads.html", icon: "↓" },
-    { id: "old", title: "Старые версии", url: "old.html", icon: "◷" },
-    { id: "skins", title: "Скины", url: "skins.html", icon: "◈" },
-    { id: "news", title: "Новости", url: "news.html", icon: "▤" },
-    { id: "about", title: "О проекте", url: "about.html", icon: "ⓘ" }
+  {
+    id: "home",
+    title: "Главная",
+    url: "index.html"
+  },
+  {
+    id: "downloads",
+    title: "Загрузки",
+    url: "downloads.html"
+  },
+  {
+    id: "old",
+    title: "Старые версии",
+    url: "old.html"
+  },
+  {
+    id: "skins",
+    title: "Скины",
+    url: "skins.html"
+  },
+  {
+    id: "news",
+    title: "Новости",
+    url: "news.html"
+  },
+  {
+    id: "about",
+    title: "О проекте",
+    url: "about.html"
+  }
 ];
 
+// Получаем содержимое страницы
 const content = document.getElementById("page-content");
-const currentPage = content.dataset.page;
 
-const navigation = pages.map(page => `
-    <a class="nav-link ${page.id === currentPage ? "active" : ""}"
-       href="${page.url}" target="_blank" rel="noopener">
-       ${page.icon} ${page.title}
+if (!content) {
+  console.error("AEMP: элемент #page-content не найден!");
+} else {
+
+  const currentPage = content.dataset.page;
+
+  // Создаём навигацию
+  const navigation = pages.map(page => `
+    <a
+      class="nav-link ${page.id === currentPage ? "active" : ""}"
+      href="${page.url}"
+      ${page.id === currentPage ? 'aria-current="page"' : ""}
+    >
+      ${page.title}
     </a>
-`).join("");
+  `).join("");
 
-const layout = document.createElement("div");
-layout.className = "layout";
+  // Создаём структуру сайта
+  const layout = document.createElement("div");
+  layout.className = "layout";
 
-layout.innerHTML = `
+  layout.innerHTML = `
     <aside class="sidebar">
-        <div class="logo">AEMP</div>
-        <div class="logo-subtitle">Enjoy the sound</div>
 
-        <div class="nav-title">Навигация</div>
-        <nav class="nav-links">${navigation}</nav>
+      <div class="site-logo">
+        <div class="logo-text">AEMP</div>
+        <div class="logo-subtitle">Enjoy the sound.</div>
+      </div>
+
+      <nav class="nav-links">
+        ${navigation}
+      </nav>
+
+      <div class="sidebar-footer">
+        <span>AEMP © 2026</span>
+      </div>
+
     </aside>
 
     <div class="main-container"></div>
 
     <aside class="rightbar">
-        <h3>Рекомендации</h3>
 
-        <div class="recommendation">
-            <strong>AEMP PRO</strong>
-            Попробуйте расширенную версию плеера.
-        </div>
+      <h3>Рекомендации</h3>
 
-        <div class="recommendation">
-            <strong>Скины</strong>
-            Настройте внешний вид своего плеера.
+      <a class="recommendation" href="downloads.html">
+        <div>
+          <strong>AEMP PRO</strong>
+          <p>Попробуй наш музыкальный плеер</p>
         </div>
+      </a>
 
-        <div class="recommendation">
-            <strong>Новости</strong>
-            Следите за обновлениями проекта.
+      <a class="recommendation" href="skins.html">
+        <div>
+          <strong>Скины</strong>
+          <p>Измени внешний вид AEMP</p>
         </div>
+      </a>
+
+      <a class="recommendation" href="news.html">
+        <div>
+          <strong>Новости</strong>
+          <p>Следи за обновлениями проекта</p>
+        </div>
+      </a>
+
     </aside>
-`;
+  `;
 
-document.body.appendChild(layout);
-layout.querySelector(".main-container").appendChild(content);
+  // Перемещаем содержимое страницы
+  const mainContainer = layout.querySelector(".main-container");
+  mainContainer.appendChild(content);
+
+  // Добавляем структуру на страницу
+  document.body.appendChild(layout);
+
+  console.log("AEMP: навигация успешно загружена!");
+}
