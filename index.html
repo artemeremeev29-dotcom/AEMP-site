@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -26,6 +27,7 @@ section{margin-bottom:28px}
 footer{text-align:center;padding:24px;color:#888;border-top:1px solid #333}
 .version{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .tag{color:#aaa;font-size:13px}
+.status{font-size:13px;color:#aaa;margin-top:12px}
 </style>
 </head>
 <body>
@@ -45,17 +47,24 @@ footer{text-align:center;padding:24px;color:#888;border-top:1px solid #333}
 <div class="hero">
 <h1>Enjoy the sound</h1>
 <p class="muted">Твой музыкальный плеер. Твоя музыка. Твой AEMP.</p>
-<p><b>Последняя версия: AEMP PRO 1.4</b></p>
-<a class="btn" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.4/AEMP-PRO-1.4-skins_mod.apk">Скачать AEMP PRO 1.4</a>
+<p><b>Последняя версия: <span id="heroVersion">AEMP PRO 1.4</span></b></p>
+<a class="btn" id="heroDownload"
+href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/latest">
+Скачать AEMP PRO
+</a>
+<p class="status" id="releaseStatus">Проверка обновлений...</p>
 </div>
 
 <section id="downloads">
 <h2>Последняя версия</h2>
 <div class="card">
-<h3>AEMP PRO 1.4</h3>
-<p class="muted">Android · APK</p>
-<p>Добавлены встроенные скины интерфейса.</p>
-<a class="btn" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.4/AEMP-PRO-1.4-skins_mod.apk">Скачать APK</a>
+<h3 id="releaseVersion">AEMP PRO 1.4</h3>
+<p class="muted" id="releaseInfo">Android · APK</p>
+<p id="releaseDescription">Добавлены встроенные скины интерфейса.</p>
+<a class="btn" id="releaseDownload"
+href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/latest">
+Скачать APK
+</a>
 </div>
 </section>
 
@@ -69,7 +78,7 @@ footer{text-align:center;padding:24px;color:#888;border-top:1px solid #333}
 <h3>AEMP PRO 1.3</h3>
 <span class="tag">Android · APK</span>
 </div>
-<a class="btn alt" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.4/AEMP-PRO_v1.3.apk">Скачать 1.3</a>
+<a class="btn alt" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/tag/1.3">Скачать 1.3</a>
 </div>
 </div>
 
@@ -79,7 +88,7 @@ footer{text-align:center;padding:24px;color:#888;border-top:1px solid #333}
 <h3>AEMP PRO 1.2</h3>
 <span class="tag">Android · APK</span>
 </div>
-<a class="btn alt" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/download/1.4/AEMP-PRO_v1.2.apk">Скачать 1.2</a>
+<a class="btn alt" href="https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/tag/1.2">Скачать 1.2</a>
 </div>
 </div>
 </section>
@@ -120,6 +129,93 @@ AEMP PRO — развитие проекта с новыми возможнос�
 </main>
 
 <footer>AEMP PRO · Enjoy the sound 🧡</footer>
+
+<script>
+const OWNER = "artemeremeev29-dotcom";
+const REPO = "AEMP-PRO";
+
+const API =
+`https://api.github.com/repos/${OWNER}/${REPO}/releases/latest`;
+
+const FALLBACK = {
+ version: "1.4",
+ url: "https://github.com/artemeremeev29-dotcom/AEMP-PRO/releases/latest",
+ description: "Добавлены встроенные скины интерфейса."
+};
+
+async function loadLatestRelease() {
+ const status = document.getElementById("releaseStatus");
+
+ try {
+  const response = await fetch(API, {
+   headers: { "Accept": "application/vnd.github+json" }
+  });
+
+  if (!response.ok) {
+   throw new Error("GitHub API: " + response.status);
+  }
+
+  const release = await response.json();
+
+  const apk = release.assets.find(asset =>
+   asset.name.toLowerCase().endsWith(".apk")
+  );
+
+  if (!apk) {
+   throw new Error("В релизе не найден APK");
+  }
+
+  const version = release.tag_name.replace(/^v/i, "");
+
+  const description = release.body?.trim()
+   || "Новый выпуск AEMP PRO.";
+
+  document.getElementById("heroVersion").textContent =
+   "AEMP PRO " + version;
+
+  document.getElementById("releaseVersion").textContent =
+   "AEMP PRO " + version;
+
+  document.getElementById("releaseInfo").textContent =
+   "Android · APK · " +
+   new Date(release.published_at).toLocaleDateString("ru-RU");
+
+  document.getElementById("releaseDescription").textContent =
+   description;
+
+  document.getElementById("heroDownload").href =
+   apk.browser_download_url;
+
+  document.getElementById("releaseDownload").href =
+   apk.browser_download_url;
+
+  status.textContent = "Последняя версия успешно загружена с GitHub.";
+
+ } catch (error) {
+  console.error(error);
+
+  document.getElementById("heroVersion").textContent =
+   "AEMP PRO " + FALLBACK.version;
+
+  document.getElementById("releaseVersion").textContent =
+   "AEMP PRO " + FALLBACK.version;
+
+  document.getElementById("releaseDescription").textContent =
+   FALLBACK.description;
+
+  document.getElementById("heroDownload").href =
+   FALLBACK.url;
+
+  document.getElementById("releaseDownload").href =
+   FALLBACK.url;
+
+  status.textContent =
+   "Не удалось проверить обновления. Показана резервная версия.";
+ }
+}
+
+loadLatestRelease();
+</script>
 
 </body>
 </html>
