@@ -7,7 +7,7 @@
 
     <title>Скачать AEMP Windows — AEMP PRO</title>
 
-    <meta name="description" content="Скачайте AEMP PRO для Windows. Официальный установщик музыкального проигрывателя AEMP.">
+    <meta name="description" content="Скачайте последнюю версию AEMP PRO для Windows. Официальный установщик музыкального проигрывателя AEMP.">
 
     <meta name="keywords" content="AEMP Windows, скачать AEMP, AEMP PRO, музыкальный плеер Windows">
 
@@ -18,7 +18,7 @@
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="Скачать AEMP Windows">
-    <meta property="og:description" content="Официальная загрузка AEMP PRO для Windows.">
+    <meta property="og:description" content="Официальная загрузка последней версии AEMP PRO для Windows.">
 
     <meta name="theme-color" content="#171717">
 
@@ -37,13 +37,20 @@
 
     <section class="card">
 
-        <h2>AEMP PRO 1.5.0</h2>
+        <h2>AEMP PRO <span id="windowsLatestVersion">Загрузка...</span></h2>
 
-        <div class="version">1.5.0 Stable</div>
+        <div class="version">
+            <span id="windowsLatestVersionBadge">Определяем версию...</span>
+        </div>
 
-        <p>
-            Первая стабильная версия настольной сборки
-            AEMP для Windows.
+        <p id="windowsReleaseStatus">
+            Подключаемся к GitHub...
+        </p>
+
+        <p id="windowsReleaseDate" class="muted"></p>
+
+        <p id="windowsReleaseDescription">
+            Получаем информацию о последнем выпуске.
         </p>
 
         <p>
@@ -59,8 +66,10 @@
         </p>
 
         <a
+            id="windowsDownloadButton"
             class="button"
-            href="https://github.com/artemeremeev29-dotcom/AEMP-Windows/releases/download/1.5.0/AEMP.PRO.Setup.1.5.0.exe"
+            href="#"
+            hidden
         >
             ⬇ Скачать установщик
         </a>
@@ -76,16 +85,19 @@
         <h2>Предыдущие версии</h2>
 
         <p>
-            Нужна более ранняя сборка? Посмотри архив
-            предыдущих выпусков AEMP Windows.
+            Предыдущие стабильные выпуски AEMP Windows
+            автоматически отображаются ниже.
         </p>
 
-        <a
-            class="secondary-button"
-            href="windows-old.html"
-        >
-            Открыть архив версий
-        </a>
+        <div id="windowsOldVersions">
+            Загружаем архив версий...
+        </div>
+
+        <p>
+            <a class="secondary-button" href="windows-old.html">
+                Открыть полный архив
+            </a>
+        </p>
 
     </section>
 
@@ -108,7 +120,7 @@
             class="secondary-button"
             href="https://github.com/artemeremeev29-dotcom/AEMP-Windows"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
         >
             Открыть репозиторий GitHub
         </a>
@@ -131,11 +143,13 @@
 
     <footer>
         © AEMP Project. Enjoy the sound. 2026
+        <p>Enjoy the sound.</p>
     </footer>
 
 </main>
 
 <script src="shell.js"></script>
+<script src="windows-release.js"></script>
 
 </body>
 </html>
