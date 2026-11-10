@@ -1,45 +1,50 @@
-// ========================================
-// AEMP WEBSITE — NAVIGATION SYSTEM
-// ========================================
-
-const currentPage = document.getElementById("page-content")?.dataset.page;
-
-const navigation = [
-    {
-        title: "Главная",
-        url: "index.html",
-        id: "home"
-    }
-];
-
-const platformSections = [
-    {
-        title: "Для Windows",
-        items: [
-            { title: "О программе", url: "windows-about.html", id: "windows-about" },
-            { title: "Скачать", url: "windows-downloads.html", id: "windows-downloads" },
-            { title: "Старые версии", url: "windows-old.html", id: "windows-old" },
-            { title: "Скины", url: "windows-skins.html", id: "windows-skins" },
-            { title: "Новости", url: "windows-news.html", id: "windows-news" }
-        ]
-    },
-    {
-        title: "Для Android",
-        items: [
-            { title: "О программе", url: "about.html", id: "about" },
-            { title: "Скачать", url: "downloads.html", id: "downloads" },
-            { title: "Старые версии", url: "old.html", id: "old" },
-            { title: "Скины", url: "skins.html", id: "skins" },
-            { title: "Новости", url: "news.html", id: "news" }
-        ]
-    }
-];
+// ==========================================
+// AEMP — PLATFORM NAVIGATION
+// Windows + Android
+// ==========================================
 
 const content = document.getElementById("page-content");
 
 if (!content) {
-    console.error("AEMP: элемент #page-content не найден!");
+    console.error("AEMP: page-content not found");
 } else {
+    const currentPage = content.dataset.page || "home";
+
+    const sections = [
+        {
+            title: "Главное",
+            links: [
+                { id: "home", title: "Главная", url: "index.html" }
+            ]
+        },
+        {
+            title: "Для Windows",
+            links: [
+                { id: "windows-about", title: "О программе", url: "windows-about.html" },
+                { id: "windows-downloads", title: "Скачать", url: "windows-downloads.html" },
+                { id: "windows-old", title: "Старые версии", url: "windows-old.html" },
+                { id: "windows-skins", title: "Скины", url: "windows-skins.html" },
+                { id: "windows-news", title: "Новости", url: "windows-news.html" }
+            ]
+        },
+        {
+            title: "Для Android",
+            links: [
+                { id: "about", title: "О программе", url: "about.html" },
+                { id: "downloads", title: "Скачать", url: "downloads.html" },
+                { id: "old", title: "Старые версии", url: "old.html" },
+                { id: "skins", title: "Скины", url: "skins.html" },
+                { id: "news", title: "Новости", url: "news.html" }
+            ]
+        },
+        {
+            title: "О проекте",
+            links: [
+                { id: "project", title: "О проекте", url: "project.html" },
+                { id: "license", title: "Лицензионное соглашение", url: "license.html" }
+            ]
+        }
+    ];
 
     const layout = document.createElement("div");
     layout.className = "layout";
@@ -47,50 +52,34 @@ if (!content) {
     const sidebar = document.createElement("aside");
     sidebar.className = "sidebar";
 
-    const logo = document.createElement("div");
-    logo.className = "site-logo";
-    logo.innerHTML = `
-        <div class="logo-text">AEMP</div>
-        <div class="logo-subtitle">Enjoy the sound.</div>
+    sidebar.innerHTML = `
+        <div class="site-logo">
+            <div class="logo-text">AEMP</div>
+            <div class="logo-subtitle">Enjoy the sound.</div>
+        </div>
+
+        <nav class="nav-links">
+            ${sections.map(section => `
+                <div class="nav-section">
+                    <div class="nav-title">${section.title}</div>
+
+                    ${section.links.map(link => `
+                        <a
+                            class="nav-link ${link.id === currentPage ? "active" : ""}"
+                            href="${link.url}"
+                            ${link.id === currentPage ? 'aria-current="page"' : ""}
+                        >
+                            ${link.title}
+                        </a>
+                    `).join("")}
+                </div>
+            `).join("")}
+        </nav>
+
+        <div class="sidebar-footer">
+            AEMP © 2026
+        </div>
     `;
-
-    const nav = document.createElement("nav");
-    nav.className = "nav-links";
-
-    function createLink(item) {
-        const link = document.createElement("a");
-        link.className = "nav-link";
-        link.href = item.url;
-        link.textContent = item.title;
-
-        if (item.id === currentPage) {
-            link.classList.add("active");
-            link.setAttribute("aria-current", "page");
-        }
-
-        return link;
-    }
-
-    navigation.forEach(item => {
-        nav.appendChild(createLink(item));
-    });
-
-    platformSections.forEach(section => {
-        const heading = document.createElement("div");
-        heading.className = "nav-title";
-        heading.textContent = section.title;
-        nav.appendChild(heading);
-
-        section.items.forEach(item => {
-            nav.appendChild(createLink(item));
-        });
-    });
-
-    const sidebarFooter = document.createElement("div");
-    sidebarFooter.className = "sidebar-footer";
-    sidebarFooter.textContent = "AEMP © 2026";
-
-    sidebar.append(logo, nav, sidebarFooter);
 
     const mainContainer = document.createElement("div");
     mainContainer.className = "main-container";
@@ -98,40 +87,38 @@ if (!content) {
 
     const rightbar = document.createElement("aside");
     rightbar.className = "rightbar";
+
     rightbar.innerHTML = `
-        <h3>Рекомендации</h3>
+        <h3>Платформы AEMP</h3>
 
         <a class="recommendation" href="windows-downloads.html">
-            <div>
-                <strong>AEMP Windows</strong>
-                <p>Музыкальный плеер для Windows</p>
-            </div>
+            <strong>AEMP Windows</strong>
+            <p>Версия 1.5.0 Stable</p>
         </a>
 
         <a class="recommendation" href="downloads.html">
-            <div>
-                <strong>AEMP Android</strong>
-                <p>Мобильная версия AEMP PRO</p>
-            </div>
+            <strong>AEMP Android</strong>
+            <p>Мобильная версия плеера</p>
         </a>
 
-        <a class="recommendation" href="skins.html">
-            <div>
-                <strong>Скины Android</strong>
-                <p>Измени внешний вид плеера</p>
-            </div>
+        <h3 style="margin-top: 25px;">Полезное</h3>
+
+        <a class="recommendation" href="news.html">
+            <strong>Новости Android</strong>
+            <p>Обновления мобильной версии</p>
         </a>
 
-        <a class="recommendation" href="windows-skins.html">
-            <div>
-                <strong>Скины Windows</strong>
-                <p>Оформление Windows-версии</p>
-            </div>
+        <a class="recommendation" href="windows-news.html">
+            <strong>Новости Windows</strong>
+            <p>Обновления Windows-версии</p>
         </a>
     `;
 
-    layout.append(sidebar, mainContainer, rightbar);
+    layout.appendChild(sidebar);
+    layout.appendChild(mainContainer);
+    layout.appendChild(rightbar);
+
     document.body.appendChild(layout);
 
-    console.log("AEMP: навигация загружена!");
+    console.log("AEMP: platform navigation loaded");
 }
