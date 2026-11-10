@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -39,10 +38,12 @@
 
         <h2>Актуальная версия</h2>
 
-        <div class="version">1.5.0 Stable</div>
+        <div class="version" id="windowsLatestVersion">
+            Загружаем версию...
+        </div>
 
         <p>
-            Первая стабильная версия настольного
+            Последний стабильный выпуск настольного
             музыкального проигрывателя AEMP.
         </p>
 
@@ -54,11 +55,22 @@
             <span class="orange">Формат:</span> EXE
         </p>
 
+        <p id="windowsReleaseDate" class="muted">
+            Загружаем дату выпуска...
+        </p>
+
+        <p id="windowsReleaseStatus" class="muted">
+            Подключаемся к GitHub...
+        </p>
+
         <a
             class="button"
-            href="https://github.com/artemeremeev29-dotcom/AEMP-Windows/releases/download/1.5.0/AEMP.PRO.Setup.1.5.0.exe"
+            id="windowsDownloadButton"
+            href="https://github.com/artemeremeev29-dotcom/AEMP-Windows/releases"
+            target="_blank"
+            rel="noopener noreferrer"
         >
-            Скачать AEMP 1.5.0
+            Скачать актуальную версию
         </a>
 
     </section>
@@ -68,22 +80,24 @@
         <h2>История выпусков</h2>
 
         <p>
-            Здесь будет отображаться история предыдущих
-            версий AEMP Windows по мере публикации новых релизов.
+            Здесь автоматически отображаются предыдущие
+            стабильные версии AEMP Windows.
         </p>
 
-        <p class="muted">
-            Пока доступен первый стабильный выпуск.
-        </p>
+        <div id="windowsOldVersions">
+            Загружаем архив версий...
+        </div>
 
-        <a
-            class="secondary-button"
-            href="https://github.com/artemeremeev29-dotcom/AEMP-Windows/releases"
-            target="_blank"
-            rel="noopener"
-        >
-            Посмотреть все релизы GitHub
-        </a>
+        <p>
+            <a
+                class="secondary-button"
+                href="https://github.com/artemeremeev29-dotcom/AEMP-Windows/releases"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Посмотреть все релизы GitHub
+            </a>
+        </p>
 
     </section>
 
@@ -92,8 +106,7 @@
         <h2>Типы выпусков</h2>
 
         <p>
-            В дальнейшем в проекте могут использоваться
-            следующие типы сборок:
+            В проекте используются следующие типы сборок:
         </p>
 
         <ul>
@@ -101,11 +114,6 @@
             <li><span class="orange">Beta</span> — тестовые версии.</li>
             <li><span class="orange">Stable</span> — стабильные релизы.</li>
         </ul>
-
-        <p class="muted">
-            Это возможные типы будущих выпусков,
-            а не список доступных загрузок.
-        </p>
 
     </section>
 
@@ -131,6 +139,7 @@
 </main>
 
 <script src="shell.js"></script>
+<script src="windows-release.js"></script>
 
 </body>
 </html>
