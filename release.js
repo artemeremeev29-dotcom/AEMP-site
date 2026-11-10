@@ -8,7 +8,8 @@ const elements = {
     date: document.getElementById("releaseDate"),
     status: document.getElementById("releaseStatus"),
     button: document.getElementById("downloadButton"),
-    github: document.getElementById("githubButton")
+    github: document.getElementById("githubButton"),
+    archive: document.getElementById("oldVersions")
 };
 
 
@@ -75,7 +76,7 @@ function findAPK(release) {
 }
 
 
-// Дата
+// Форматирование даты
 
 function formatDate(date) {
     if (!date) return "Дата не указана";
@@ -84,7 +85,68 @@ function formatDate(date) {
 }
 
 
-// Загрузка последнего релиза
+// Создание элемента архива
+
+function createArchiveItem(release) {
+    const container = document.createElement("div");
+    container.className = "archive-item";
+
+    const title = document.createElement("h3");
+    title.textContent =
+        release.name || "AEMP PRO " + release.tag_name;
+
+    const date = document.createElement("p");
+    date.className = "muted";
+    date.textContent = formatDate(release.published_at);
+
+    const apk = findAPK(release);
+
+    container.appendChild(title);
+    container.appendChild(date);
+
+    const link = document.createElement("a");
+    link.className = "secondary-button";
+    link.target = "_blank";
+    link.rel = "noopener";
+
+    if (apk) {
+        link.href = apk.browser_download_url;
+        link.textContent = "Скачать APK";
+    } else {
+        link.href = release.html_url;
+        link.textContent = "Открыть релиз на GitHub";
+    }
+
+    container.appendChild(link);
+
+    return container;
+}
+
+
+// Отображение архива
+
+function renderArchive(releases) {
+    if (!elements.archive) return;
+
+    elements.archive.replaceChildren();
+
+    const oldReleases = releases.slice(1);
+
+    if (!oldReleases.length) {
+        elements.archive.textContent =
+            "Предыдущих версий пока нет.";
+        return;
+    }
+
+    oldReleases.forEach(release => {
+        elements.archive.appendChild(
+            createArchiveItem(release)
+        );
+    });
+}
+
+
+// Загрузка релизов
 
 async function loadLatestRelease() {
     try {
@@ -146,7 +208,7 @@ async function loadLatestRelease() {
         }
 
 
-        // ПРЯМОЕ СКАЧИВАНИЕ APK
+        // Скачивание APK
 
         if (elements.button) {
             if (apk) {
@@ -165,13 +227,14 @@ async function loadLatestRelease() {
         }
 
 
-        // ОТДЕЛЬНАЯ ССЫЛКА НА GITHUB
+        // Ссылка на GitHub
 
         if (elements.github) {
             elements.github.href = latest.html_url;
             elements.github.target = "_blank";
             elements.github.rel = "noopener";
-            elements.github.textContent = "Перейти к релизу на GitHub";
+            elements.github.textContent =
+                "Перейти к релизу на GitHub";
         }
 
 
@@ -183,6 +246,11 @@ async function loadLatestRelease() {
                 : "Релиз найден, но APK отсутствует";
         }
 
+
+        // Архив
+
+        renderArchive(stableReleases);
+
         console.log("AEMP latest release:", latest);
         console.log("AEMP APK:", apk);
 
@@ -192,6 +260,11 @@ async function loadLatestRelease() {
         if (elements.status) {
             elements.status.textContent =
                 "Ошибка загрузки: " + error.message;
+        }
+
+        if (elements.archive) {
+            elements.archive.textContent =
+                "Не удалось загрузить архив версий.";
         }
     }
 }
