@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -40,15 +39,32 @@
         <h2><span class="orange">AEMP</span> для Windows</h2>
 
         <p>Настольный музыкальный плеер для Windows.</p>
-        <p><strong>Последняя версия: 1.5.0 Stable</strong></p>
 
-        <a class="download-btn"
-           href="https://github.com/artemeremeev29-dotcom/AEMP-Windows/releases/download/1.5.0/AEMP.PRO.Setup.1.5.0.exe">
+        <p>
+            <strong>
+                Последняя версия:
+                <span id="windowsLatestVersion">Загрузка...</span>
+            </strong>
+        </p>
+
+        <p class="muted" id="windowsReleaseStatus">
+            Проверяем обновления на GitHub...
+        </p>
+
+        <a
+            class="download-btn"
+            id="windowsDownloadButton"
+            href="https://github.com/artemeremeev29-dotcom/AEMP-Windows/releases"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
             Скачать для Windows
         </a>
 
         <p>
             <a href="windows-about.html">Подробнее о Windows-версии →</a>
+            <br>
+            <a href="windows-old.html">Архив предыдущих версий →</a>
         </p>
     </section>
 
@@ -93,6 +109,7 @@
 </main>
 
 <script src="shell.js"></script>
+<script src="windows-release.js"></script>
 
 </body>
 </html>
