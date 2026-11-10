@@ -232,3 +232,121 @@ footer {
         padding: 17px;
     }
 }
+/* ========================================
+   AEMP — WINDOWS + ANDROID NAVIGATION
+======================================== */
+
+.site-logo {
+    margin-bottom: 28px;
+}
+
+.logo-text {
+    color: #FF8C00;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.logo-subtitle {
+    color: #888;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.nav-section {
+    margin-bottom: 22px;
+}
+
+.nav-title {
+    color: #FF8C00;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 18px 0 9px;
+}
+
+.nav-link {
+    display: block;
+    padding: 11px 12px;
+    margin: 4px 0;
+    border-radius: 9px;
+    color: #bbb;
+    font-size: 14px;
+    transition: background .2s, color .2s;
+}
+
+.nav-link:hover {
+    background: #303030;
+    color: #fff;
+}
+
+.nav-link.active {
+    background: #FF8C00;
+    color: #171717;
+    font-weight: 700;
+}
+
+.sidebar-footer {
+    color: #666;
+    font-size: 12px;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+}
+
+.main-container {
+    min-width: 0;
+}
+
+.rightbar {
+    align-self: start;
+}
+
+.recommendation {
+    display: block;
+    text-decoration: none;
+}
+
+.recommendation p {
+    color: #999;
+    margin: 5px 0 0;
+    font-size: 12px;
+}
+
+@media (max-width: 900px) {
+    .site-logo {
+        margin-bottom: 10px;
+    }
+
+    .logo-text {
+        font-size: 23px;
+    }
+
+    .nav-section {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin: 0;
+    }
+
+    .nav-title {
+        display: none;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .nav-link {
+        white-space: nowrap;
+        padding: 9px 12px;
+        font-size: 12px;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+}
