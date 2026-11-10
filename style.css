@@ -34,6 +34,63 @@ a {
     height: fit-content;
 }
 
+/* ========================================
+   AEMP — ADDITIONAL NAVIGATION STYLES
+======================================== */
+
+.logo-text {
+    color: #FF8C00;
+    font-size: 27px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.nav-section {
+    margin-bottom: 18px;
+}
+
+.nav-section .nav-title {
+    color: #FF8C00;
+}
+
+.sidebar-footer {
+    color: #777;
+    font-size: 12px;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+}
+
+.rightbar .recommendation {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.rightbar .recommendation p {
+    margin: 4px 0 0;
+    color: #999;
+}
+
+@media (max-width: 900px) {
+    .nav-section {
+        display: contents;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+    }
+
+    .nav-link {
+        flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+}
+
+
 .logo {
     color: #FF8C00;
     font-size: 27px;
@@ -349,4 +406,5 @@ footer {
     .sidebar-footer {
         display: none;
     }
+    
 }
