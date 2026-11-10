@@ -14,13 +14,40 @@ function normalizeVersion(value) {
         .toLowerCase();
 }
 
+
+// Сравнение версий
+
+function compareVersions(a, b) {
+    const getParts = release =>
+        normalizeVersion(release.tag_name)
+            .split(/[.+_-]/)
+            .map(part => parseInt(part, 10) || 0);
+
+    const first = getParts(a);
+    const second = getParts(b);
+
+    for (let i = 0; i < Math.max(first.length, second.length); i++) {
+        const x = first[i] || 0;
+        const y = second[i] || 0;
+
+        if (x !== y) return y - x;
+    }
+
+    return new Date(b.published_at || 0) -
+           new Date(a.published_at || 0);
+}
+
+
+// Проверка текущей версии
+
 function isCurrentRelease(release) {
     const tag = normalizeVersion(release.tag_name);
-    const name = normalizeVersion(release.name);
 
-    return tag === CURRENT_VERSION ||
-           name.includes(CURRENT_VERSION);
+    return tag === CURRENT_VERSION;
 }
+
+
+// Поиск APK
 
 function findAPK(release) {
     const assets = release.assets || [];
@@ -39,15 +66,23 @@ function findAPK(release) {
     ) || files[0] || null;
 }
 
+
+// Создание ссылки
+
 function createLink(text, url) {
     const link = document.createElement("a");
 
     link.className = "button";
     link.textContent = text;
     link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener";
 
     return link;
 }
+
+
+// Иконка приложения
 
 function createIcon() {
     const image = document.createElement("img");
@@ -58,15 +93,75 @@ function createIcon() {
     image.width = 76;
     image.height = 76;
 
-    image.style.width = "76px";
-    image.style.height = "76px";
-    image.style.minWidth = "76px";
-    image.style.border = "4px solid #080808";
-    image.style.borderRadius = "50%";
-    image.style.objectFit = "cover";
+    image.onerror = () => {
+        image.style.display = "none";
+    };
 
     return image;
 }
+
+
+// Форматирование даты
+
+function formatDate(date) {
+    if (!date) return "Дата не указана";
+
+    return new Date(date).toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+}
+
+
+// Создание карточки релиза
+
+function createReleaseCard(release) {
+    const card = document.createElement("div");
+    card.className = "archive-release";
+
+    const icon = createIcon();
+
+    const info = document.createElement("div");
+    info.className = "archive-release-info";
+
+    const title = document.createElement("h2");
+    title.textContent =
+        release.name || "AEMP PRO " + release.tag_name;
+
+    const date = document.createElement("p");
+    date.className = "muted";
+    date.textContent = "Дата выпуска: " +
+        formatDate(release.published_at);
+
+    const apk = findAPK(release);
+
+    info.appendChild(title);
+    info.appendChild(date);
+
+    card.appendChild(icon);
+    card.appendChild(info);
+
+    if (apk) {
+        card.appendChild(
+            createLink("Скачать APK", apk.browser_download_url)
+        );
+    } else {
+        const missing = document.createElement("p");
+        missing.className = "muted";
+        missing.textContent = "APK в этом релизе отсутствует.";
+        card.appendChild(missing);
+    }
+
+    card.appendChild(
+        createLink("GitHub", release.html_url)
+    );
+
+    return card;
+}
+
+
+// Загрузка архива
 
 async function loadArchive() {
     try {
@@ -85,11 +180,13 @@ async function loadArchive() {
 
         const releases = await response.json();
 
-        const oldVersions = releases.filter(release =>
-            !release.draft &&
-            !release.prerelease &&
-            !isCurrentRelease(release)
-        );
+        const oldVersions = releases
+            .filter(release =>
+                !release.draft &&
+                !release.prerelease &&
+                !isCurrentRelease(release)
+            )
+            .sort(compareVersions);
 
         archive.replaceChildren();
 
@@ -99,67 +196,9 @@ async function loadArchive() {
         }
 
         oldVersions.forEach(release => {
-            const card = document.createElement("div");
-            card.className = "archive-release";
-
-            card.style.display = "flex";
-            card.style.alignItems = "center";
-            card.style.flexWrap = "wrap";
-            card.style.gap = "16px";
-            card.style.padding = "14px 0";
-
-            const icon = createIcon();
-
-            const info = document.createElement("div");
-            info.style.flex = "1";
-            info.style.minWidth = "150px";
-
-            const title = document.createElement("h2");
-            title.textContent =
-                release.name || "AEMP PRO " + release.tag_name;
-
-            const apk = findAPK(release);
-
-            info.appendChild(title);
-
-            if (release.published_at) {
-                const date = document.createElement("p");
-                date.className = "muted";
-
-                date.textContent =
-                    "Дата выпуска: " +
-                    new Date(release.published_at).toLocaleDateString(
-                        "ru-RU",
-                        {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric"
-                        }
-                    );
-
-                info.appendChild(date);
-            }
-
-            card.appendChild(icon);
-            card.appendChild(info);
-
-            if (apk) {
-                card.appendChild(
-                    createLink("Скачать APK", apk.browser_download_url)
-                );
-            } else {
-                const missing = document.createElement("p");
-                missing.className = "muted";
-                missing.textContent = "APK в этом релизе отсутствует.";
-
-                card.appendChild(missing);
-            }
-
-            card.appendChild(
-                createLink("GitHub", release.html_url)
+            archive.appendChild(
+                createReleaseCard(release)
             );
-
-            archive.appendChild(card);
         });
 
         status.textContent =
