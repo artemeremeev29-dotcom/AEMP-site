@@ -1,124 +1,137 @@
-
 // ========================================
 // AEMP WEBSITE — NAVIGATION SYSTEM
 // ========================================
 
-const pages = [
-  {
-    id: "home",
-    title: "Главная",
-    url: "index.html"
-  },
-  {
-    id: "downloads",
-    title: "Загрузки",
-    url: "downloads.html"
-  },
-  {
-    id: "old",
-    title: "Старые версии",
-    url: "old.html"
-  },
-  {
-    id: "skins",
-    title: "Скины",
-    url: "skins.html"
-  },
-  {
-    id: "news",
-    title: "Новости",
-    url: "news.html"
-  },
-  {
-    id: "about",
-    title: "О проекте",
-    url: "about.html"
-  },
-  {
-    id: "license",
-    title: "Лицензионное соглашение",
-    url: "license.html"
-  }
+const currentPage = document.getElementById("page-content")?.dataset.page;
+
+const navigation = [
+    {
+        title: "Главная",
+        url: "index.html",
+        id: "home"
+    }
 ];
 
-// Получаем содержимое страницы
+const platformSections = [
+    {
+        title: "Для Windows",
+        items: [
+            { title: "О программе", url: "windows-about.html", id: "windows-about" },
+            { title: "Скачать", url: "windows-downloads.html", id: "windows-downloads" },
+            { title: "Старые версии", url: "windows-old.html", id: "windows-old" },
+            { title: "Скины", url: "windows-skins.html", id: "windows-skins" },
+            { title: "Новости", url: "windows-news.html", id: "windows-news" }
+        ]
+    },
+    {
+        title: "Для Android",
+        items: [
+            { title: "О программе", url: "about.html", id: "about" },
+            { title: "Скачать", url: "downloads.html", id: "downloads" },
+            { title: "Старые версии", url: "old.html", id: "old" },
+            { title: "Скины", url: "skins.html", id: "skins" },
+            { title: "Новости", url: "news.html", id: "news" }
+        ]
+    }
+];
+
 const content = document.getElementById("page-content");
 
 if (!content) {
-  console.error("AEMP: элемент #page-content не найден!");
+    console.error("AEMP: элемент #page-content не найден!");
 } else {
 
-  const currentPage = content.dataset.page;
+    const layout = document.createElement("div");
+    layout.className = "layout";
 
-  // Создаём навигацию
-  const navigation = pages.map(page => `
-    <a
-      class="nav-link ${page.id === currentPage ? "active" : ""}"
-      href="${page.url}"
-      ${page.id === currentPage ? 'aria-current="page"' : ""}
-    >
-      ${page.title}
-    </a>
-  `).join("");
+    const sidebar = document.createElement("aside");
+    sidebar.className = "sidebar";
 
-  // Создаём структуру сайта
-  const layout = document.createElement("div");
-  layout.className = "layout";
-
-  layout.innerHTML = `
-    <aside class="sidebar">
-
-      <div class="site-logo">
+    const logo = document.createElement("div");
+    logo.className = "site-logo";
+    logo.innerHTML = `
         <div class="logo-text">AEMP</div>
         <div class="logo-subtitle">Enjoy the sound.</div>
-      </div>
+    `;
 
-      <nav class="nav-links">
-        ${navigation}
-      </nav>
+    const nav = document.createElement("nav");
+    nav.className = "nav-links";
 
-      <div class="sidebar-footer">
-        <span>AEMP © 2026</span>
-      </div>
+    function createLink(item) {
+        const link = document.createElement("a");
+        link.className = "nav-link";
+        link.href = item.url;
+        link.textContent = item.title;
 
-    </aside>
+        if (item.id === currentPage) {
+            link.classList.add("active");
+            link.setAttribute("aria-current", "page");
+        }
 
-    <div class="main-container"></div>
+        return link;
+    }
 
-    <aside class="rightbar">
+    navigation.forEach(item => {
+        nav.appendChild(createLink(item));
+    });
 
-      <h3>Рекомендации</h3>
+    platformSections.forEach(section => {
+        const heading = document.createElement("div");
+        heading.className = "nav-title";
+        heading.textContent = section.title;
+        nav.appendChild(heading);
 
-      <a class="recommendation" href="downloads.html">
-        <div>
-          <strong>AEMP PRO</strong>
-          <p>Попробуй наш музыкальный плеер</p>
-        </div>
-      </a>
+        section.items.forEach(item => {
+            nav.appendChild(createLink(item));
+        });
+    });
 
-      <a class="recommendation" href="skins.html">
-        <div>
-          <strong>Скины</strong>
-          <p>Измени внешний вид AEMP</p>
-        </div>
-      </a>
+    const sidebarFooter = document.createElement("div");
+    sidebarFooter.className = "sidebar-footer";
+    sidebarFooter.textContent = "AEMP © 2026";
 
-      <a class="recommendation" href="news.html">
-        <div>
-          <strong>Новости</strong>
-          <p>Следи за обновлениями проекта</p>
-        </div>
-      </a>
+    sidebar.append(logo, nav, sidebarFooter);
 
-    </aside>
-  `;
+    const mainContainer = document.createElement("div");
+    mainContainer.className = "main-container";
+    mainContainer.appendChild(content);
 
-  // Перемещаем содержимое страницы
-  const mainContainer = layout.querySelector(".main-container");
-  mainContainer.appendChild(content);
+    const rightbar = document.createElement("aside");
+    rightbar.className = "rightbar";
+    rightbar.innerHTML = `
+        <h3>Рекомендации</h3>
 
-  // Добавляем структуру на страницу
-  document.body.appendChild(layout);
+        <a class="recommendation" href="windows-downloads.html">
+            <div>
+                <strong>AEMP Windows</strong>
+                <p>Музыкальный плеер для Windows</p>
+            </div>
+        </a>
 
-  console.log("AEMP: навигация успешно загружена!");
+        <a class="recommendation" href="downloads.html">
+            <div>
+                <strong>AEMP Android</strong>
+                <p>Мобильная версия AEMP PRO</p>
+            </div>
+        </a>
+
+        <a class="recommendation" href="skins.html">
+            <div>
+                <strong>Скины Android</strong>
+                <p>Измени внешний вид плеера</p>
+            </div>
+        </a>
+
+        <a class="recommendation" href="windows-skins.html">
+            <div>
+                <strong>Скины Windows</strong>
+                <p>Оформление Windows-версии</p>
+            </div>
+        </a>
+    `;
+
+    layout.append(sidebar, mainContainer, rightbar);
+    document.body.appendChild(layout);
+
+    console.log("AEMP: навигация загружена!");
 }
