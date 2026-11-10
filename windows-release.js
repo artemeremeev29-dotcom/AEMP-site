@@ -1,55 +1,50 @@
-
 const API_URL =
     "https://api.github.com/repos/artemeremeev29-dotcom/AEMP-Windows/releases?per_page=100";
 
 const latestVersion = document.getElementById("windowsLatestVersion");
+const latestBadge = document.getElementById("windowsLatestVersionBadge");
 const releaseStatus = document.getElementById("windowsReleaseStatus");
 const releaseDate = document.getElementById("windowsReleaseDate");
 const releaseDescription = document.getElementById("windowsReleaseDescription");
 const downloadButton = document.getElementById("windowsDownloadButton");
 const archive = document.getElementById("windowsOldVersions");
 
+// Нормализация номера версии
 function normalizeVersion(value) {
     return String(value || "")
         .trim()
         .replace(/^v/i, "")
-        .toLowerCase();
+        .split("-")[0];
 }
 
+// Сравнение версий: 1.10.0 будет новее 1.9.0
 function compareVersions(a, b) {
-    const first = normalizeVersion(a).split(/[.-]/);
-    const second = normalizeVersion(b).split(/[.-]/);
+    const first = normalizeVersion(a).split(".");
+    const second = normalizeVersion(b).split(".");
 
-    for (let i = 0; i < Math.max(first.length, second.length); i++) {
-        const x = first[i] || "0";
-        const y = second[i] || "0";
+    const length = Math.max(first.length, second.length);
 
-        const nx = Number(x);
-        const ny = Number(y);
+    for (let i = 0; i < length; i++) {
+        const x = Number(first[i] || 0);
+        const y = Number(second[i] || 0);
 
-        let result;
-
-        if (Number.isFinite(nx) && Number.isFinite(ny)) {
-            result = nx - ny;
-        } else {
-            result = x.localeCompare(y);
+        if (x !== y) {
+            return x - y;
         }
-
-        if (result !== 0) return result;
     }
 
     return 0;
 }
 
+// Поиск EXE установщика
 function findInstaller(release) {
-    const assets = release.assets || [];
-
-    return assets.find(asset =>
+    return (release.assets || []).find(asset =>
         asset.name.toLowerCase().endsWith(".exe") &&
         asset.browser_download_url
     );
 }
 
+// Форматирование даты
 function formatDate(value) {
     if (!value) return "Дата не указана";
 
@@ -60,6 +55,7 @@ function formatDate(value) {
     });
 }
 
+// Создание карточки старой версии
 function createArchiveItem(release) {
     const card = document.createElement("div");
     card.className = "archive-release";
@@ -67,9 +63,14 @@ function createArchiveItem(release) {
     const title = document.createElement("h3");
     title.textContent = release.name || release.tag_name;
 
+    const version = document.createElement("p");
+    version.className = "version";
+    version.textContent = release.tag_name;
+
     const date = document.createElement("p");
     date.className = "muted";
-    date.textContent = "Дата выпуска: " + formatDate(release.published_at);
+    date.textContent =
+        "Дата выпуска: " + formatDate(release.published_at);
 
     const link = document.createElement("a");
     link.className = "secondary-button";
@@ -78,7 +79,7 @@ function createArchiveItem(release) {
     link.rel = "noopener noreferrer";
     link.textContent = "Открыть релиз";
 
-    card.append(title, date, link);
+    card.append(title, version, date, link);
 
     const installer = findInstaller(release);
 
@@ -87,16 +88,19 @@ function createArchiveItem(release) {
         download.className = "button";
         download.href = installer.browser_download_url;
         download.textContent = "Скачать EXE";
+
         card.appendChild(download);
     }
 
     return card;
 }
 
+// Загрузка релизов GitHub
 async function loadWindowsReleases() {
     try {
         if (releaseStatus) {
-            releaseStatus.textContent = "Загружаем информацию о версиях...";
+            releaseStatus.textContent =
+                "Загружаем информацию о версиях...";
         }
 
         const response = await fetch(API_URL, {
@@ -107,66 +111,78 @@ async function loadWindowsReleases() {
         });
 
         if (!response.ok) {
-            throw new Error("GitHub API: " + response.status);
+            throw new Error("Ошибка GitHub API: " + response.status);
         }
 
         const releases = await response.json();
 
+        // Только опубликованные стабильные релизы с EXE
         const stable = releases
             .filter(release =>
                 !release.draft &&
-                !release.prerelease
+                !release.prerelease &&
+                findInstaller(release)
             )
             .sort((a, b) =>
                 compareVersions(b.tag_name, a.tag_name)
             );
 
-        if (!stable.length) {
-            throw new Error("Стабильные релизы пока не найдены.");
+        if (stable.length === 0) {
+            throw new Error("Стабильные версии с EXE не найдены.");
         }
 
         const current = stable[0];
         const installer = findInstaller(current);
 
+        const version = current.tag_name || current.name;
+
+        // Последняя версия
         if (latestVersion) {
-            latestVersion.textContent =
-                current.tag_name || current.name;
+            latestVersion.textContent = version;
         }
 
+        // Значок Stable
+        if (latestBadge) {
+            latestBadge.textContent = version + " Stable";
+        }
+
+        // Дата выпуска
         if (releaseDate) {
             releaseDate.textContent =
                 "Дата выпуска: " + formatDate(current.published_at);
         }
 
+        // Описание релиза
         if (releaseDescription) {
             releaseDescription.textContent =
                 current.body || "Описание релиза отсутствует.";
         }
 
+        // Кнопка скачивания
         if (downloadButton) {
-            if (installer) {
-                downloadButton.href = installer.browser_download_url;
-                downloadButton.hidden = false;
-            } else {
-                downloadButton.hidden = true;
-            }
+            downloadButton.href = installer.browser_download_url;
+            downloadButton.hidden = false;
         }
 
+        // Статус
         if (releaseStatus) {
-            releaseStatus.textContent = installer
-                ? "Последняя стабильная версия найдена."
-                : "Релиз найден, но установщик EXE отсутствует.";
+            releaseStatus.textContent =
+                "Последняя стабильная версия найдена.";
         }
 
+        // Архив предыдущих версий
         if (archive) {
             archive.replaceChildren();
 
-            stable.slice(1).forEach(release => {
-                archive.appendChild(createArchiveItem(release));
-            });
+            const oldReleases = stable.slice(1);
 
-            if (stable.length <= 1) {
-                archive.textContent = "Предыдущих версий пока нет.";
+            if (oldReleases.length === 0) {
+                archive.textContent =
+                    "Предыдущих версий пока нет.";
+            } else {
+                oldReleases.forEach(release => {
+                    archive.appendChild(createArchiveItem(release));
+                });
             }
         }
 
@@ -177,7 +193,13 @@ async function loadWindowsReleases() {
             releaseStatus.textContent =
                 "Не удалось загрузить версии: " + error.message;
         }
+
+        if (archive) {
+            archive.textContent =
+                "Не удалось загрузить архив версий.";
+        }
     }
 }
 
+// Запуск
 loadWindowsReleases();
